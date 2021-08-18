@@ -1,0 +1,597 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Laxmi Jewellers</title>
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FAFAFA;
+            font: 12pt "Tahoma";
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 0.5cm;
+            margin: 1cm auto;
+            background: white;
+        }
+
+        .subpage {
+            border: 2px solid;
+            height: 285mm;
+            outline: 0.5cm #ffffff solid;
+            position: relative;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            .page {
+                margin: 0;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
+            }
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        table {
+            background-color: transparent;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        .font13 {
+            font-size: 13px;
+        }
+
+        .table>caption+thead>tr:first-child>td,
+        .table>caption+thead>tr:first-child>th,
+        .table>colgroup+thead>tr:first-child>td,
+        .table>colgroup+thead>tr:first-child>th,
+        .table>thead:first-child>tr:first-child>td,
+        .table>thead:first-child>tr:first-child>th {
+            border-top: 0;
+        }
+
+        .table-bordered {
+            border: 1px solid #ddd;
+        }
+
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border-bottom-width: 2px;
+        }
+
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>td,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border: 1px solid #ddd;
+        }
+
+
+        .table-column-bordered {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid #ddd;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .table-column-bordered>thead>tr>td,
+        .table-column-bordered>thead>tr>th {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid #ddd;
+        }
+
+        .table-column-bordered>tbody>tr>td,
+        .table-column-bordered>tbody>tr>th,
+        .table-column-bordered>tfoot>tr>td,
+        .table-column-bordered>tfoot>tr>th,
+        .table-column-bordered>thead>tr>td,
+        .table-column-bordered>thead>tr>th {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid #ddd;
+            padding: 6px;
+            line-height: 1.42857143;
+            vertical-align: top;
+
+        }
+
+        .table>thead>tr>th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .table>tbody>tr>td,
+        .table>tbody>tr>th,
+        .table>tfoot>tr>td,
+        .table>tfoot>tr>th,
+        .table>thead>tr>td,
+        .table>thead>tr>th {
+            padding: 6px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td,
+        th {
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        user agent stylesheet th {
+            display: table-cell;
+            vertical-align: inherit;
+            font-weight: bold;
+            text-align: -internal-center;
+        }
+
+        .underline {
+            border-bottom: 1px solid rgb(158, 158, 158);
+            padding-bottom: 2px;
+        }
+
+        p {
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+
+        .no-padding td {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .footer-content {
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="page">
+            <div class="subpage">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td style="font-size: 25px;"
+                                                colspan="2"><b>Laxmi Jewellers</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Address :</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">
+                                                    26-27, Abhishek-2, Sudama
+                                                    Chowk, Mota Varachha,
+                                                    surat-395006
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>GSTIN :</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">24AAGFL6937P1ZO</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Contact No :</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">
+                                                    9408562327
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table class="table" style="margin-top: 50px">
+                                    <tbody>
+                                        <tr style="font-size: 13px;">
+                                            <td class="font13">
+                                                <b>Bill Number :</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">
+                                                    958
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Date: </b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">
+                                                    22-10-1995
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Alternate No :</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">
+                                                    9723325846
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="font-size: 17px;">Buyer's
+                                Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding-top: 0px; padding-bottom: 0px;
+                                padding-right: 0px;">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="font13"
+                                                style="border-top-width: 0px;">
+                                                <b>Name: </b>
+                                            </td>
+                                            <td class="font13"
+                                                style="border-top-width: 0px;">
+                                                <span class="underline">Gopal
+                                                    Sabhadiya</span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Contact No:</b>
+                                            </td>
+                                            <td class="font13">
+                                                <span class="underline">8000523940</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td style="padding-top: 0px; padding-bottom: 0px;
+                                padding-right: 0px; padding-left: 0px;">
+                                <table class="table" style="padding:0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="font13"
+                                                style="border-top-width: 0px;">
+                                                <b>GSTIN: </b>
+                                            </td>
+                                            <td class="font13"
+                                                style="border-top-width: 0px;">
+                                                <span class="underline">24AAGFL6937P1ZO</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font13">
+                                                <b>Amt. Bal: </b>
+                                            </td class="font13">
+                                            <td class="font13">
+                                                <span class="underline">25000.00
+                                                    CR</span>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="4">
+                                <b>Address:</b>
+                                <span class="underline">10, Purvi Soc.,
+                                    Street-1, Part-2, Hirabaug, Varachha
+                                    Road, Surat-395006</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color:grey">
+                            <th class="font13">Index</th>
+                            <th class="font13">Item Name</th>
+                            <th class="font13">Gr. Wt.</th>
+                            <th class="font13">Net Wt.</th>
+                            <th class="font13">Caret</th>
+                            <th class="font13">Rate</th>
+                            <th class="font13" colspan="2">Item Amt.</th>
+                            <th class="font13">Labour</th>
+                            <th class="font13">Net Amt.</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-bottom:1px solid black" id="bill-item">
+                        <tr>
+                            <td class="font13">1</td>
+                            <td class="font13">Gold Ring</td>
+                            <td class="font13">3.480</td>
+                            <td class="font13">3.480</td>
+                            <td class="font13">22</td>
+                            <td class="font13">4360</td>
+                            <td class="font13" colspan="2">15086.00</td>
+                            <td class="font13">10.00 L %</td>
+                            <td class="font13">16985</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="7" rowspan="6"
+                                style="padding-top:2px; padding-bottom:2px;
+                                vertical-align:middle">
+                                <table class="table">
+                                    <thead>
+                                        <th colspan="5">
+                                            Scrap Details
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Net Wt.</th>
+                                            <th>Touch</th>
+                                            <th>Rate</th>
+                                            <th>Ammount</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Gold Ornament</td>
+                                            <td>2.96</td>
+                                            <td>100</td>
+                                            <td>4360.01</td>
+                                            <td>12910.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>Net
+                                    Ammount:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">16995</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>CGST
+                                    1.5%:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">250.5</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>SGST
+                                    1.5%:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">250.5</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>Total
+                                    Ammount:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">17196</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>Gold
+                                    Ammount:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">12910.00</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>Bill
+                                    Outstanding:</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">4286</td>
+                        </tr>
+                        <tr>
+                            <td class="font13" colspan="4">- All Disputes are
+                                subject to Surat Jurisdiction</td>
+                            <td class="font13" colspan="3">Os Bal: 31786.00 DR</td>
+                            <td class="font13" colspan="2"
+                                style="padding-top:2px; padding-bottom:2px;"><b>Paid
+                                    (Method):</b>
+                            </td>
+                            <td class="font13" style="padding-top:2px;
+                                padding-bottom:2px;">1000 (Cash)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="footer-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="font-size: 15px;">Bank
+                                    Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding-top: 0px; padding-bottom:
+                                    0px; padding-right: 0px;">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <b>Bank name:</b>
+                                                </td>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <span class="underline">Axis
+                                                        Bank</span>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Account No:</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span class="underline">90000000654987</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="padding-top: 0px; padding-bottom:
+                                    0px; padding-right: 0px; padding-left:
+                                    0px;">
+                                    <table class="table" style="padding:0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>IFSC Code: </b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span class="underline">AXIS00005</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Branch: </b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span class="underline">Hirabaug,
+                                                        Varachha Road,
+                                                        Surat-395006</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="font13" style="padding:6px 6px">
+                                    -Jadtar/Kundan, Stones (Moti, Polki, Color
+                                    Stones,
+                                    any
+                                    types of Para
+                                    etc.)
+                                    weight
+                                    is having<br> upto 20% variations to their
+                                    actual weight. While returning goods, their
+                                    actual
+                                    weight
+                                    will be deducted.</th>
+                                <th class="font13" style="padding:6px 6px">
+                                    For: Laxmi Jewellers
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font13" style="padding:40px 6px 6px
+                                    6px">Party Signature:</td>
+                                <td class="font13" style="padding:40px 6px 6px
+                                    6px">Signature:</td>
+
+                            </tr>
+                            <tr>
+                                <td class="font13" colspan="2"
+                                    style="padding:6px 6px 40px 6px">
+                                    <span class="font13"">Remarks:</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+                window.document.getElementById("bill-item").rows[document.getElementById("bill-item").rows.length - 8].style.height = (300 - 31 * (document.getElementById("bill-item").rows.length - 8)).toString() + "px"
+        </script>
+    </body>
+
+</html>
