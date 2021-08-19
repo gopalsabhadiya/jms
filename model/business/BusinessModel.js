@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const BankSchema = require('./BankModel');
+const BankModel = require('./BankModel');
 
 const BusinessSchema = new mongoose.Schema({
     name: {
@@ -21,20 +21,16 @@ const BusinessSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    contactNo: {
+    contactNo: [{
         type: Number,
         required: true
-    },
-    alternateNo: {
-        type: Number,
-        required: true
-    },
+    }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'users'
     },
-    bank: BankSchema.schema,
+    bank: BankModel.schema,
     date: {
         type: Date,
         default: Date.now

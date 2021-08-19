@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const validate = require('../../middleware/validation/validate');
-const gravatar = require('gravatar')
+const validationMiddleware = require('../../middleware/validation/validate');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -16,9 +15,9 @@ const UserModel = require('../../model/user/UserModel');
  *  @access    Public
  */
 router.post('/',
-    validate(['userName', 'email', 'passwordWithLength']),
+    validationMiddleware,
     async (req, res) => {
-        console.log(req.body);
+        console.log("Serving request:", req.baseUrl);
         try {
 
 
@@ -29,14 +28,7 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'User Already exists' }] });
             }
 
-            const avatar = gravatar.url(req.body.email, {
-                s: '200',
-                r: 'pg',
-                d: 'mm'
-            });
-
             user = new UserModel(req.body);
-            user.avatar = avatar;
 
             const salt = await bcrypt.genSalt(10);
 
@@ -71,7 +63,7 @@ router.get(
     '/',
     authMiddleware,
     async (req, res) => {
-
+        console.log("Serving request:", req.baseUrl);
         try {
             console.log(req)
             let user = await User.findById(req.user.id).select('-password');
@@ -93,7 +85,7 @@ router.delete(
     '/:user_id',
     authMiddleware,
     async (req, res) => {
-
+        console.log("Serving request:", req.baseUrl);
         try {
             console.log(req.params.user_id)
 

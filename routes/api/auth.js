@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const userModel = require('../../model/user/UserModel');
+const UserModel = require('../../model/user/UserModel');
 const config = require('config');
-const validate = require('../../middleware/validation/validate');
+const validationMiddleware = require('../../middleware/validation/validate');
 const bcrypt = require('bcryptjs');
 
 
@@ -14,14 +14,15 @@ const bcrypt = require('bcryptjs');
  */
 router.post(
     '/',
-    validate(['email', 'password']),
+    validationMiddleware,
     async (req, res) => {
+        console.log("Serving request:", req.baseUrl)
 
         const { email, password } = req.body;
 
         console.log('hello');
         try {
-            let user = await userModel.findOne({email});
+            let user = await UserModel.findOne({ email });
 
             if (user) {
                 if (await bcrypt.compare(password, user.password)) {
@@ -30,7 +31,7 @@ router.post(
                             id: user.id
                         }
                     };
-        
+
                     jwt.sign(
                         payload,
                         config.get('jwtSecret'),
@@ -44,7 +45,7 @@ router.post(
                 }
             }
 
-            return res.status(400).json({ msg: 'Invalid Credentials'});
+            return res.status(400).json({ msg: 'Invalid Credentials' });
 
         } catch (error) {
             console.log(`Error while authenticating User: ${email} \n ${error}`);

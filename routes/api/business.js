@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const validate = require('../../middleware/validation/validate');
-const gravatar = require('gravatar')
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
+const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-
 const BusinessModel = require('../../model/business/BusinessModel');
 
 
@@ -16,11 +11,10 @@ const BusinessModel = require('../../model/business/BusinessModel');
  *  @access    Public
  */
 router.post('/',
-    authMiddleware,
+    [authMiddleware, validationMiddleware],
     async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
         try {
-
-
             let business = await BusinessModel.findOne({ email: req.body.email });
 
             if (business) {
@@ -49,10 +43,9 @@ router.get(
     '/:business_id',
     authMiddleware,
     async (req, res) => {
-
+        console.log("Serving request:", req.baseUrl);
         try {
-            console.log(req)
-            let business = await BusinessModel.findById({ _id: req.params.business_id }).select('-password');
+            let business = await BusinessModel.findOne({ _id: req.params.business_id, user: req.user.id });
 
             if (business) {
                 return res.status(200).json(business);
@@ -71,7 +64,7 @@ router.delete(
     '/:business_id',
     authMiddleware,
     async (req, res) => {
-
+        console.log("Serving request:", req.baseUrl);
         try {
             console.log(req.params.user_id)
 
@@ -91,7 +84,7 @@ router.put(
     '/',
     authMiddleware,
     async (req, res) => {
-
+        console.log("Serving request:", req.baseUrl);
         try {
             console.log(req.body.id)
 
