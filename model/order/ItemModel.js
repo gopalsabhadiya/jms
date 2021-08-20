@@ -33,6 +33,10 @@ const ItemSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    pieces: {
+        type: Number,
+        required: true
+    },
     extras: [ExtraChargablesModel.schema],
     huid: {
         type: String,

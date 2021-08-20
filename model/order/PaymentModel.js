@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { PaymentTypeEnum } = require('../../util/enum');
 
 const CheckSchema = new mongoose.Schema({
     bank: {
@@ -18,7 +19,12 @@ const CheckSchema = new mongoose.Schema({
         type: String
     },
     aadharNo: {
-        type: String
+        type: Number
+    },
+    type: {
+        type: String,
+        enum: Object.values(PaymentTypeEnum),
+        required: true
     },
 });
 

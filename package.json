@@ -18,7 +18,8 @@
     "html-pdf": "^3.0.1",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.7"
+    "mongoose": "^5.13.7",
+    "mongoose-sequence": "^5.3.1"
   },
   "devDependencies": {
     "concurrently": "^6.2.1",

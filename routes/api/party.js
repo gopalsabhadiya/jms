@@ -25,6 +25,7 @@ router.post('/',
             }
 
             party = new PartyModel(req.body);
+            party.user = req.user.id;
             await party.save();
 
             res.json({ msg: "Party registered successfully" });

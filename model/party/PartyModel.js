@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const { PartyTypeEnum } = require('../../util/enum');
-const BalanceModel = require('./BalanceModel');
-const OrderModel = require('../order/OrderModel');
 
 const PartySchema = new mongoose.Schema({
     name: {
@@ -17,7 +15,10 @@ const PartySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    balance: BalanceModel.schema,
+    balance: {
+        type: Number,
+        required: true
+    },
     address: {
         type: String,
     },
@@ -36,6 +37,11 @@ const PartySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'orders'
     }],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

@@ -10,6 +10,10 @@ const ScrapSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    touch: {
+        type: Number,
+        required: true
+    },
     rate: {
         type: Number,
         required: true

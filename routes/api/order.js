@@ -103,7 +103,9 @@ router.post('/',
             order.scrapAmmount = scrapAmmount;
             order.finalAmmount = order.totalAmmount - order.scrapAmmount;
             order.billOutstanding = order.totalAmmount - order.scrapAmmount - order.kasar;
-            console.log('kjsfgh', order.netAmmount + taxAmmount);
+            order.partyPreBalance = party.balance;
+            order.party = party._id;
+            order.partyPostBalance = order.partyPreBalance - order.billOutstanding;
 
             if (order.kasar) {
                 order.billOutstanding -= order.kasar;
@@ -111,7 +113,7 @@ router.post('/',
 
             party.order.push(order._id);
 
-            console.log(JSON.stringify(party));
+            party.balance = party.balance - order.billOutstanding;
 
             await order.save();
             await party.save();
