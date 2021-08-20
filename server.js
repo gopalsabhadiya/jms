@@ -18,6 +18,6 @@ app.use('/api/order', require('./routes/api/order'));
 app.use('/api/order/bill', require('./routes/api/bill'));
 
 
-const PORT = process.eventNames.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => console.log(`App Started on PORT: ${PORT}`));
