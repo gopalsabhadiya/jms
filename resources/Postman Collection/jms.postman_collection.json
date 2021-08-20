@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "e9074772-d008-4712-ba31-84e91e706c21",
+		"name": "jms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "business",
+			"item": [
+				{
+					"name": "Register Business",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTM2MzcwMywiZXhwIjoxNjI5Mzk5NzAzfQ.5oJ1wbderbGTPApA9gMV4j9QBPf27mCQuRiV4wRExmw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tanishq\",\r\n    \"address\": \"Virat nagar, Spinning mill, Varachaa Road, Surat-395006\",\r\n    \"gstin\": \"987AGR5463E52\",\r\n    \"email\": \"help@tanishq.com\",\r\n    \"contactNo\": \"95416543517\",\r\n    \"alternateNo\": \"8943574562\",\r\n    \"bank\": {\r\n        \"name\": \"Axis Bank\",\r\n        \"accountNo\": 902000654809816,\r\n        \"ifsc\": \"AXIS000005\",\r\n        \"branch\": \"A.K. Road, Surat-395006\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/business",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"business"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Business",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTM2MzcwMywiZXhwIjoxNjI5Mzk5NzAzfQ.5oJ1wbderbGTPApA9gMV4j9QBPf27mCQuRiV4wRExmw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/business/611e1c423a2b245c80b9673d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"business",
+								"611e1c423a2b245c80b9673d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hasti Gondaliya\",\r\n    \"email\": \"hasti.gondaliya1@gmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"gopal.sabhadiya@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTMxNzAwNSwiZXhwIjoxNjI5MzUzMDA1fQ.2Vo2xHuTzo_atbb4gTexzX0sEY5MzKABdB8DUL6qdvE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tanishq\",\r\n    \"address\": \"Virat nagar, Spinning mill, Varachaa Road, Surat-395006\",\r\n    \"gstin\": \"987AGR5463E52\",\r\n    \"email\": \"help@tanishq.com\",\r\n    \"contactNo\": \"95416543517\",\r\n    \"alternateNo\": \"8943574562\",\r\n    \"bank\": {\r\n\"name\":\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/business",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"business"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjBlN2VmZDRiM2Y3NDA0NTY4NjY5MDc5In0sImlhdCI6MTYyNTgxMjk0OCwiZXhwIjoxNjI1ODQ4OTQ4fQ.OD34b8iouTmId_ge1wlJ9loCbD9JiQaKgdUOrGWxTHk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/user/60e7efd4b3f7404568669079",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"60e7efd4b3f7404568669079"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Party",
+			"item": [
+				{
+					"name": "Register Party",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTQzNDg5MCwiZXhwIjoxNjI5NDcwODkwfQ.6CTbHbXw6BGeDQ-JfhwXRW7Bp8kTD1V07dhEWsTx5Dc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Raju Rastogi\",\r\n    \"contactNo\": 769987321,\r\n    \"gstin\": \"98KJGHI35796KUH\",\r\n    \"balance\": 100000,\r\n    \"address\": \"3, Idiot park, Worried Circle, University-700070\",\r\n    \"type\": \"Retail\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/party",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"party"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Place Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTQzNDg5MCwiZXhwIjoxNjI5NDcwODkwfQ.6CTbHbXw6BGeDQ-JfhwXRW7Bp8kTD1V07dhEWsTx5Dc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"party\": \"611f5de021ae783280167755\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Gold Ring\",\r\n            \"grossWeight\": 4.5,\r\n            \"netWeight\": 4.3,\r\n            \"carat\": 22,\r\n            \"rate\": \"4511\",\r\n            \"labour\": {\r\n                \"type\": \"Per Gram\",\r\n                \"value\": \"125\"\r\n            },\r\n            \"extras\": [\r\n                {\r\n                    \"type\": \"Diamond\",\r\n                    \"labourCharge\": 20,\r\n                    \"pieces\": 23,\r\n                    \"rate\": 250\r\n                },\r\n                {\r\n                    \"type\": \"Hall Mark\",\r\n                    \"rate\": 450\r\n                },\r\n                {\r\n                    \"type\": \"Rhodium\",\r\n                    \"rate\": 450\r\n                }\r\n            ],\r\n            \"huid\": \"G6857H987R\",\r\n            \"pieces\": 1\r\n        }\r\n    ],\r\n    \"gst\": [\r\n        {\r\n            \"type\": \"CGST\",\r\n            \"value\": 1.5\r\n        },\r\n        {\r\n            \"type\": \"SGST\",\r\n            \"value\": 1.5\r\n        }\r\n    ],\r\n    \"scrap\": {\r\n        \"name\": \"Gold Ornament\",\r\n        \"netWeight\": 2.95,\r\n        \"touch\": 100,\r\n        \"rate\": 4511\r\n    },\r\n    \"payment\": {\r\n        \"type\": \"Check\",\r\n        \"bank\": \"Axis Bank\",\r\n        \"ammount\": 25000,\r\n        \"checkNumber\": 35498374,\r\n        \"panNo\": \"EXPK569\",\r\n        \"aadharNo\": 987625696543\r\n    },\r\n    \"date\": \"10-22-1995\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/order",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Bill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjExZDVjMTE4MWVlZDQyNWJjYmE5YTNhIn0sImlhdCI6MTYyOTM5ODMzOSwiZXhwIjoxNjI5NDM0MzM5fQ.Mucfv25pT_AqGAvH1WX0hbJRYrByAFEkLbhAUYQZMMU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": \"611e97637ef1d45c1c369d1e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/order/bill",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"order",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
