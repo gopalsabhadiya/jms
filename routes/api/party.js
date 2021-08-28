@@ -24,11 +24,58 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'Party Already exists' }] });
             }
 
+            console.log("Party Input", req.body);
             party = new PartyModel(req.body);
-            party.user = req.user.id;
-            await party.save();
+            console.log("Party Modal", party);
 
-            res.json({ msg: "Party registered successfully" });
+            party.user = req.user.id;
+            await PartyModel.findOneAndUpdate({ _id: party._id }, party, { upsert: true });
+
+            res.json(party);
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+router.get('/',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+
+
+            let party = await PartyModel.find({ user: req.user.id });
+
+            if (!party) {
+                console.error(`No Parties for User: ${user.email}`);
+                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
+            }
+            res.json(party);
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+router.delete('/:party_id',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+
+
+            let party = await PartyModel.findOneAndRemove({ _id: req.params.party_id });
+
+            if (!party) {
+                console.error(`No Parties for User: ${user.email}`);
+                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
+            }
+            res.json({ msg: "Deleted successfully" });
 
         } catch (error) {
             console.log(error);

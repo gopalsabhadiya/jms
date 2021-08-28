@@ -47,12 +47,14 @@ router.post('/',
 );
 
 const generateItemDetailsRows = (items) => {
+    let tableData = "";
     for (let i = 0; i < items.length; i++) {
         let extraDetails = prepareExtraDetails(items[i]);
         console.log('extra details: ', extraDetails);
-        return `<tr><td class="font13">${i + 1}</td><td class="font13">${extraDetails.name}</td><td class="font13">${extraDetails.pieces}<td class="font13">${items[i].grossWeight}</td></td><td class="font13">${items[i].netWeight}</td><td class="font13">${items[i].carat}</td><td class="font13">${extraDetails.rate}</td><td class="font13" colspan="2">${extraDetails.itemAmmount}</td><td class="font13">${extraDetails.labour}</td><td class="font13">${items[i].netAmmount}</td></tr>`;
-
+        tableData += `<tr><td class="font13">${i + 1}</td><td class="font13">${extraDetails.name}</td><td class="font13">${extraDetails.pieces}<td class="font13">${items[i].grossWeight}</td></td><td class="font13">${items[i].netWeight}</td><td class="font13">${items[i].carat}</td><td class="font13">${extraDetails.rate}</td><td class="font13" colspan="2">${extraDetails.itemAmmount}</td><td class="font13">${extraDetails.labour}</td><td class="font13">${items[i].netAmmount}</td></tr>`;
     }
+    console.log(tableData);
+    return tableData;
 }
 
 const prepareExtraDetails = (item) => {
@@ -71,7 +73,7 @@ const prepareExtraDetails = (item) => {
             break;
     }
     let extraDetails = {
-        name: `${item.name}`,
+        name: `${item.name} - ${item.huid}`,
         pieces: `${item.pieces}`,
         rate: `${item.rate}`,
         labour: `${labour}`,

@@ -28,6 +28,7 @@ const BusinessSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        unique: true,
         ref: 'users'
     },
     bank: BankModel.schema,

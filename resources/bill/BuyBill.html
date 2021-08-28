@@ -268,8 +268,9 @@
                                                 </td>
                                                 <td class="font13">
                                                     <span>
-                                                        ${order.date.getDate()},
-                                                        ${order.date.getMonth()}
+                                                        ${order.date.getDate()}
+                                                        ${order.date.toLocaleString("default",
+                                                        { month: "long" })}
                                                         ${order.date.getFullYear()}
                                                     </span>
                                                 </td>
