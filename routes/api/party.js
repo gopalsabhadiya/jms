@@ -4,7 +4,6 @@ const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
 const PartyModel = require('../../model/party/PartyModel');
 
-
 /**
  *  @route     POST api/users
  *  @desc      Register User
@@ -16,20 +15,25 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-
             let party = await PartyModel.findOne({ email: req.body.gstin });
 
             if (party) {
-                console.error(`User: ${user.email} already exists`);
                 return res.status(400).json({ errors: [{ msg: 'Party Already exists' }] });
             }
 
-            console.log("Party Input", req.body);
+
+            if (req.body._id) {
+                party = await PartyModel.findOneAndUpdate({ _id: req.body._id }, req.body);
+                console.log(req.body);
+
+                return res.json(req.body);
+            }
+
             party = new PartyModel(req.body);
-            console.log("Party Modal", party);
+            party.type = "Retail";
 
             party.user = req.user.id;
-            await PartyModel.findOneAndUpdate({ _id: party._id }, party, { upsert: true });
+            party = await party.save();
 
             res.json(party);
 
@@ -62,6 +66,28 @@ router.get('/',
     }
 );
 
+router.get('/:party_id',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+
+
+            let party = await PartyModel.findById({ _id: req.params.party_id });
+
+            if (!party) {
+                console.error(`No Parties for User: ${user.email}`);
+                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
+            }
+            res.json(party);
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
 router.delete('/:party_id',
     authMiddleware,
     async (req, res) => {
@@ -76,6 +102,59 @@ router.delete('/:party_id',
                 return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
             }
             res.json({ msg: "Deleted successfully" });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+router.post('/search',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving new request search:", req.baseUrl);
+        try {
+            console.log(req.body)
+            let party = await PartyModel.aggregate([
+                {
+                    '$search': {
+                        'compound': {
+                            'should': [
+                                {
+                                    'autocomplete': {
+                                        'query': `${req.body.term}`,
+                                        'path': 'name',
+                                        'fuzzy': {
+                                            'maxEdits': 2
+                                        }
+                                    }
+                                }, {
+                                    'autocomplete': {
+                                        'query': `${req.body.term}`,
+                                        'path': 'contactNo',
+                                        'fuzzy': {
+                                            'maxEdits': 2
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }, {
+                    '$project': {
+                        'name': 1,
+                        'contactNo': 1,
+                        'partyId': 1
+                    }
+                }
+            ]);
+
+            if (!party) {
+                console.error(`No Parties for User: ${user.email}`);
+                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
+            }
+            res.json(party);
 
         } catch (error) {
             console.log(error);

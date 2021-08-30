@@ -22,9 +22,31 @@ const orderAggregate = [
     }, {
         '$project': {
             'party': {
-                'order': 0,
-                'user': 0,
-                'date': 0
+                'name': 1,
+                'cointactNo': 1,
+                'gstin': 1,
+                'balance': 1,
+                'address': 1,
+                'type': 1,
+            },
+            'items': 1,
+            'gst': 1,
+            'scrap': 1,
+            'payment': 1,
+            'date': 1,
+            'netAmmount': 1,
+            'totalAmmount': 1,
+            'partyPreBalance': 1,
+            'partyPostBalance': 1,
+            'finalAmmount': 1,
+            'billOutstanding': 1,
+            'kasar': 1,
+            'orderId': 1,
+            'date': {
+                '$dateToString': {
+                    'format': '%d-%m-%Y',
+                    'date': '$date'
+                }
             },
         }
     }, {
@@ -205,7 +227,6 @@ router.get(
         try {
             console.log(req.params.order_id)
             if (mongoose.Types.ObjectId.isValid(req.params.order_id)) {
-                console.log("Serving order by id")
                 orderAggregate[0]['$match']['_id'] = mongoose.Types.ObjectId(req.params.order_id);
                 console.log(orderAggregate)
                 const order = await OrderModel.aggregate(orderAggregate);
@@ -213,12 +234,7 @@ router.get(
                 return res.json(order[0]);
             }
 
-            console.log("Serving order details")
-
-
             const orderDetails = await OrderModel.aggregate(orderDetailsAggregate);
-
-
 
             return res.json(orderDetails);
 

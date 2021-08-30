@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 const { PartyTypeEnum } = require('../../util/enum');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
 
 const PartySchema = new mongoose.Schema({
+    partyId: {
+        type: Number
+    },
     name: {
         type: String,
         required: true
     },
     contactNo: {
-        type: Number,
+        type: String,
         required: true
     },
     gstin: {
@@ -47,5 +52,7 @@ const PartySchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
+PartySchema.plugin(AutoIncrement, { id: 'party_seq', inc_field: 'partyId' })
 
 module.exports = PartyModel = mongoose.model('party', PartySchema);
