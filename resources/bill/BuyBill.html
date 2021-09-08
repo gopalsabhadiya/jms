@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Laxmi Jewellers</title>
+        <title>${party.name + "-" + order._id}</title>
         <style>
         body {
             margin: 0;
@@ -406,12 +406,19 @@
                                             <th>Ammount</th>
                                         </tr>
                                         <tr>
-                                            <td>${order.scrap.name}</td>
-                                            <td>${order.scrap.netWeight}</td>
-                                            <td>${order.scrap.touch}</td>
-                                            <td>${order.scrap.rate}</td>
-                                            <td>${order.scrap.netWeight *
+                                            <td>${order.scrap &&
+                                                order.scrap.name}</td>
+                                            <td>${order.scrap &&
+                                                order.scrap.netWeight}</td>
+                                            <td>${order.scrap &&
+                                                order.scrap.touch}</td>
+                                            <td>${order.scrap &&
                                                 order.scrap.rate}</td>
+                                            <td>${ order.scrap &&
+                                                order.scrap.netWeight &&
+                                                order.scrap.rate &&
+                                                (order.scrap.netWeight *
+                                                order.scrap.rate)}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -506,7 +513,8 @@
                         <thead>
                             <tr>
                                 <th colspan="4" style="font-size: 15px;">Payment
-                                    Details (${order.payment.type})</th>
+                                    Details (${order.payment &&
+                                    order.payment.type})</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -516,14 +524,16 @@
                                     <b>Ammount:</b>
                                 </td>
                                 <td class="font13">
-                                    <span>${order.payment.ammount}</span>
+                                    <span>${order.payment &&
+                                        order.payment.ammount}</span>
 
                                 </td>
                                 <td class="font13">
                                     <b>Check No.: </b>
                                 </td>
                                 <td class="font13">
-                                    <span>${order.payment.type==="Check" ?
+                                    <span>${(order.payment &&
+                                        order.payment.type)==="Check" ?
                                         order.payment.checkNumber : "NIL"}</span>
                                 </td>
                             </tr>
@@ -532,15 +542,18 @@
                                     <b>Bank:</b>
                                 </td>
                                 <td class="font13">
-                                    <span>${order.payment.type==="Check" ?
+                                    <span>${(order.payment &&
+                                        order.payment.type)==="Check" ?
                                         order.payment.bank : "NIL"}</span>
                                 </td>
                                 <td class="font13">
-                                    <b>PAN No.: </b><span>${order.payment.type==="Check"
+                                    <b>PAN No.: </b><span>${(order.payment &&
+                                        order.payment.type)==="Check"
                                         ? order.payment.panNo : "NIL"}</span>
                                 </td>
                                 <td class="font13">
-                                    <b>AADHAR No.: </b><span>${order.payment.type==="Check"
+                                    <b>AADHAR No.: </b><span>${(order.payment &&
+                                        order.payment.type)==="Check"
                                         ? order.payment.aadharNo : "NIL"}</span>
                                 </td>
                             </tr>

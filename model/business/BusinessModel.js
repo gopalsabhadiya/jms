@@ -32,6 +32,10 @@ const BusinessSchema = new mongoose.Schema({
         ref: 'users'
     },
     bank: BankModel.schema,
+    itemCollection: {
+        type: Map,
+        of: [String]
+    },
     date: {
         type: Date,
         default: Date.now

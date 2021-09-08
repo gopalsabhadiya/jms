@@ -104,16 +104,16 @@ router.post('/',
 
             order.partyPreBalance = party.balance;
             order.party = party._id;
-            order.partyPostBalance = order.partyPreBalance - order.billOutstanding + order.payment.ammount;
+            order.partyPostBalance = order.partyPreBalance - order.billOutstanding + (order.payment ? order.payment.ammount : 0);
 
             party.order.push(order._id);
 
-            party.balance = party.balance - order.billOutstanding + order.payment.ammount;
+            party.balance = party.balance - order.billOutstanding + (order.payment ? order.payment.ammount : 0);
 
             await order.save();
             await party.save();
 
-            res.json({ msg: "Order placed successfully" });
+            res.json({ orderId: order._id });
 
         } catch (error) {
             console.log(error);
@@ -131,7 +131,7 @@ router.put('/',
         updateOrder(newOrder);
 
         newOrder.partyPreBalance = oldOrder.partyPreBalance;
-        newOrder.partyPostBalance = newOrder.partyPreBalance - newOrder.billOutstanding + parseFloat(newOrder.payment.ammount);
+        newOrder.partyPostBalance = newOrder.partyPreBalance - newOrder.billOutstanding + (newOrder.payment ? parseFloat(newOrder.payment.ammount) : 0);
         party.balance = newOrder.partyPostBalance - oldOrder.partyPostBalance + party.balance;
         newOrder.party = party._id;
 

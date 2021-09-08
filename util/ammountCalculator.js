@@ -28,9 +28,9 @@ const updateOrder = (order) => {
 
     if (order.scrap) {
         scrapAmmount = order.scrap.netWeight * order.scrap.rate / 10;
+        order.scrap.netAmmount = scrapAmmount;
     }
 
-    order.scrap.netAmmount = scrapAmmount;
     order.scrapAmmount = scrapAmmount;
     order.finalAmmount = order.totalAmmount - order.scrapAmmount;
     order.billOutstanding = order.totalAmmount - order.scrapAmmount;

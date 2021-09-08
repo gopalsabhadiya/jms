@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
-const ItemModel = require('./ItemModel');
 const GstModel = require('./GstModel');
 const ScrapModel = require('./ScrapModel');
 const PaymentModel = require('./PaymentModel');
+const OrderItemModel = require('./OrderItemModel');
 
 
 const OrderSchema = new mongoose.Schema({
     orderId: {
         type: Number
     },
-    items: [ItemModel.schema],
+    items: [OrderItemModel.schema],
     netAmmount: {
         type: Number,
         required: true

@@ -2,11 +2,10 @@ const mongoose = require('mongoose');
 const LabourModel = require('./LabourModel');
 const ExtraChargablesModel = require('./ExtraChargablesModel');
 
-const ItemSchema = new mongoose.Schema({
+const OrderItemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        default: 0
     },
     grossWeight: {
         type: Number,
@@ -45,4 +44,4 @@ const ItemSchema = new mongoose.Schema({
 
 });
 
-module.exports = ItemModel = mongoose.model('item', ItemSchema);
+module.exports = OrderItemModel = mongoose.model('orderItem', OrderItemSchema);
