@@ -17,9 +17,11 @@ const ItemSchema = new mongoose.Schema({
     },
     grossWeight: {
         type: Number,
+        required: true,
     },
     netWeight: {
         type: Number,
+        required: true,
     },
     carat: {
         type: Number,

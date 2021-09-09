@@ -17,7 +17,6 @@ const PartySchema = new mongoose.Schema({
     },
     gstin: {
         type: String,
-        required: true,
         unique: true
     },
     balance: {

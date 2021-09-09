@@ -15,12 +15,14 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            let party = await PartyModel.findOne({ email: req.body.gstin });
+            if (req.body.gstin) {
+                let party = await PartyModel.findOne({ email: req.body.gstin });
 
-            if (party) {
-                return res.status(400).json({ errors: [{ msg: 'Party Already exists' }] });
+                if (party) {
+                    return res.status(400).json({ errors: [{ msg: 'Party Already exists' }] });
+                }
+
             }
-
 
             if (req.body._id) {
                 party = await PartyModel.findOneAndUpdate({ _id: req.body._id }, req.body);

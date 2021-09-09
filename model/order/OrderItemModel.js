@@ -39,7 +39,6 @@ const OrderItemSchema = new mongoose.Schema({
     extras: [ExtraChargablesModel.schema],
     huid: {
         type: String,
-        required: true
     }
 
 });

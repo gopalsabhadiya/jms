@@ -17,15 +17,17 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
             if (req.body._id) {
-                party = await ItemModel.findOneAndUpdate({ _id: req.body._id }, req.body);
-                console.log(req.body);
+                let item = req.body;
+                item = await ItemModel.findOneAndUpdate({ _id: item._id }, item);
+                console.log(item);
 
-                return res.json(req.body);
+                return res.json(item);
             }
-            const item = new ItemModel(req.body);
-            console.log("item:", item);
+
+            req.body.extras = req.body.extras.filter(extra => extra.type);
+            let item = new ItemModel(req.body);
             item.user = req.user.id;
-            item.save();
+            item = await item.save();
             return res.json(item);
 
 
@@ -65,7 +67,7 @@ router.delete(
         try {
             console.log(req.params.user_id)
 
-            await UserModel.findOneAndRemove({ _id: req.params.party_id });
+            await ItemModel.findOneAndRemove({ _id: req.params.item_id });
 
 
             return res.json({ msg: 'Party Deleted successfully' });
