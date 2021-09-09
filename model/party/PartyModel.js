@@ -46,6 +46,11 @@ const PartySchema = new mongoose.Schema({
         ref: 'users',
         required: true
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

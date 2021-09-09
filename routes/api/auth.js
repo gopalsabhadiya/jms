@@ -28,7 +28,8 @@ router.post(
                 if (await bcrypt.compare(password, user.password)) {
                     const payload = {
                         user: {
-                            id: user.id
+                            id: user.id,
+                            business: user.business
                         }
                     };
 

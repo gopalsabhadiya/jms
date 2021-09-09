@@ -59,6 +59,10 @@ const orderAggregate = [
 
 const orderDetailsAggregate = [
     {
+        '$match': {
+            'business': ''
+        }
+    }, {
         '$lookup': {
             'from': 'parties',
             'localField': 'party',
@@ -108,6 +112,9 @@ router.post('/',
             party.order.push(order._id);
 
             party.balance = (party.balance - order.billOutstanding + (order.payment ? order.payment.ammount : 0)).toFixed(2);
+
+            order.user = req.user.id;
+            order.business = req.user.business;
             await order.save();
             await party.save();
 
@@ -178,6 +185,8 @@ router.get(
                 console.log(order)
                 return res.json(order[0]);
             }
+
+            orderDetailsAggregate[0]['$match']['business'] = mongoose.Types.ObjectId(req.user.business);
 
             const orderDetails = await OrderModel.aggregate(orderDetailsAggregate);
 

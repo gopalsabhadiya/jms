@@ -27,6 +27,7 @@ router.post('/',
             req.body.extras = req.body.extras.filter(extra => extra.type);
             let item = new ItemModel(req.body);
             item.user = req.user.id;
+            item.business = req.user.business;
             item = await item.save();
             return res.json(item);
 
@@ -44,7 +45,7 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let items = await ItemModel.find({ user: req.user.id });
+            let items = await ItemModel.find({ business: req.user.business });
 
             if (items) {
                 return res.status(200).json(items);
