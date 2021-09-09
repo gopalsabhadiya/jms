@@ -8,7 +8,7 @@ const updateOrder = (order) => {
 
     for (let i = 0; i < order.items.length; i++) {
         updateItem(order.items[i]);
-        netAmmount += order.items[i].netAmmount;
+        netAmmount += (order.items[i].netAmmount).toFixed(2);
     }
 
     order.netAmmount = netAmmount;
@@ -16,29 +16,26 @@ const updateOrder = (order) => {
     if (order.gst) {
         console.log("into GST")
         for (let gst of order.gst) {
-            console.log(gst.value, order.netAmmount, 0.01)
-            taxAmmount += gst.value * order.netAmmount * 0.01;
+            taxAmmount += (gst.value * order.netAmmount * 0.01).toFixed(2);
         }
     }
 
-    order.totalAmmount = order.netAmmount + taxAmmount;
+    order.totalAmmount = (order.netAmmount + taxAmmount).toFixed(2);
 
-    console.log('tax Ammount:', taxAmmount, "netAmmount:", order.netAmmount, "totalAmmount:", order.totalAmmount);
 
 
     if (order.scrap) {
-        scrapAmmount = order.scrap.netWeight * order.scrap.rate / 10;
+        scrapAmmount = (order.scrap.netWeight * order.scrap.rate / 10).toFixed(2);
         order.scrap.netAmmount = scrapAmmount;
     }
 
     order.scrapAmmount = scrapAmmount;
-    order.finalAmmount = order.totalAmmount - order.scrapAmmount;
-    order.billOutstanding = order.totalAmmount - order.scrapAmmount;
+    order.finalAmmount = (order.totalAmmount - order.scrapAmmount).toFixed(2);
+    order.billOutstanding = (order.totalAmmount - order.scrapAmmount).toFixed(2);
 
-    console.log("BillOutstanding:", order.billOutstanding)
 
     if (order.kasar) {
-        order.billOutstanding -= order.kasar;
+        order.billOutstanding -= (order.kasar).toFixed(2);
     }
 }
 
@@ -46,23 +43,22 @@ const updateItem = (item) => {
 
     let labourCharges = calculateLabourCharges(item);
     let extraCharges = calculateExtraCharges(item);
-    let itemAmmount = item.netWeight * item.rate / 10;
+    let itemAmmount = (item.netWeight * item.rate / 10).toFixed(2);
 
-    item.itemAmmount = itemAmmount;
-    item.netAmmount = itemAmmount + labourCharges + extraCharges;
+    item.itemAmmount = itemAmmount.toFixed(2);
+    item.netAmmount = (itemAmmount + labourCharges + extraCharges).toFixed(2);
 
-    console.log("Updated Item:", item.name, item.itemAmmount, item.netAmmount, labourCharges, extraCharges);
 }
 
 const calculateLabourCharges = (item) => {
     if (item.labour) {
         switch (item.labour.type) {
             case LabourTypeEnum.PERCENTAGE:
-                return (item.netWeight * item.rate / 10) * item.labour.value * 0.01;
+                return ((item.netWeight * item.rate / 10) * item.labour.value * 0.01).toFixed(2);
             case LabourTypeEnum.PER_GRAM:
-                return item.netWeight * item.labour.value;
+                return (item.netWeight * item.labour.value).toFixed(2);
             case LabourTypeEnum.TOTAL:
-                return item.labour.value;
+                return (item.labour.value).toFixed(2);
             default:
                 break;
         }
@@ -75,14 +71,13 @@ const calculateExtraCharges = (item) => {
         for (let extra of item.extras) {
             switch (extra.type) {
                 case ExtraChargablesTypeEnum.DAIMOND:
-                    console.log('Diamond Charge: ', extra.rate * extra.pieces + extra.labourCharge * extra.pieces);
-                    extraCharges += extra.rate * extra.pieces + extra.labourCharge * extra.pieces;
+                    extraCharges += (extra.rate * extra.pieces + extra.labourCharge * extra.pieces).toFixed(2);
                     break;
                 case ExtraChargablesTypeEnum.HALL_MARK:
-                    extraCharges += extra.rate;
+                    extraCharges += (extra.rate).toFixed(2);
                     break;
                 case ExtraChargablesTypeEnum.RHODIUM:
-                    extraCharges += extra.rate;
+                    extraCharges += (extra.rate).toFixed(2);
                     break;
                 default:
                     break;

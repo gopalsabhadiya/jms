@@ -102,14 +102,12 @@ router.post('/',
 
             updateOrder(order);
 
-            order.partyPreBalance = party.balance;
+            order.partyPreBalance = party.balance.toFixed(2);
             order.party = party._id;
-            order.partyPostBalance = order.partyPreBalance - order.billOutstanding + (order.payment ? order.payment.ammount : 0);
-
+            order.partyPostBalance = (order.partyPreBalance - order.billOutstanding + (order.payment ? order.payment.ammount : 0)).toFixed(2);
             party.order.push(order._id);
 
-            party.balance = party.balance - order.billOutstanding + (order.payment ? order.payment.ammount : 0);
-
+            party.balance = (party.balance - order.billOutstanding + (order.payment ? order.payment.ammount : 0)).toFixed(2);
             await order.save();
             await party.save();
 
@@ -130,9 +128,9 @@ router.put('/',
         let party = await PartyModel.findById({ _id: oldOrder.party });
         updateOrder(newOrder);
 
-        newOrder.partyPreBalance = oldOrder.partyPreBalance;
-        newOrder.partyPostBalance = newOrder.partyPreBalance - newOrder.billOutstanding + (newOrder.payment ? parseFloat(newOrder.payment.ammount) : 0);
-        party.balance = newOrder.partyPostBalance - oldOrder.partyPostBalance + party.balance;
+        newOrder.partyPreBalance = (oldOrder.partyPreBalance).toFixed(2);
+        newOrder.partyPostBalance = (newOrder.partyPreBalance - newOrder.billOutstanding + (newOrder.payment ? parseFloat(newOrder.payment.ammount) : 0)).toFixed(2);
+        party.balance = (newOrder.partyPostBalance - oldOrder.partyPostBalance + party.balance).toFixed(2);
         newOrder.party = party._id;
 
         newOrder.date = moment(newOrder.date, 'DD-MM-YYYY').format('YYYY-MM-DD[T00:00:00.000Z]');

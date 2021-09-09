@@ -18,6 +18,11 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
+        required: true
+    }
 });
 
 module.exports = UserModel = mongoose.model('user', UserSchema);
