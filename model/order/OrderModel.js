@@ -51,6 +51,16 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
     date: {
         type: Date,
         required: true,

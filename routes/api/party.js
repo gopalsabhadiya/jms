@@ -37,6 +37,7 @@ router.post('/',
             party.type = "Retail";
 
             party.user = req.user.id;
+            party.business = req.user.business;
             party = await party.save();
 
             res.json(party);
@@ -55,7 +56,7 @@ router.get('/',
         try {
 
 
-            let party = await PartyModel.find({ user: req.user.id });
+            let party = await PartyModel.find({ business: req.user.business });
 
             if (!party) {
                 console.error(`No Parties for User: ${user.email}`);

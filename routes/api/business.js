@@ -25,10 +25,13 @@ router.post('/',
 
             business = new BusinessModel(req.body);
             business.users ? business.users.push(req.user.id) : business.users = [].push(req.user.business);
-            business.user = req.user.id;
-            console.log(business);
+
 
             await business.save();
+
+            let user = await UserModel.findOne({ _id: req.user.id });
+            user.business = business._id;
+            await user.save();
 
             return res.json({ "msg": "Businsess registered successfully" })
 
@@ -39,6 +42,8 @@ router.post('/',
         }
     }
 );
+
+
 
 // router.get(
 //     '/:business_id',

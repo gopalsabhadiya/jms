@@ -29,6 +29,7 @@ router.post('/',
             }
 
             user = new UserModel(req.body);
+            user.business = req.user.business;
 
             const salt = await bcrypt.genSalt(10);
 

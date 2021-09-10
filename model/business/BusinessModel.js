@@ -24,11 +24,11 @@ const BusinessSchema = new mongoose.Schema({
         type: Number,
         required: true
     }],
-    user: {
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'users'
-    },
+    }],
     bank: BankModel.schema,
     itemCollection: {
         type: Map,
