@@ -77,6 +77,8 @@ router.get('/:party_id',
         console.log("Serving request:", req.baseUrl);
         try {
 
+            console.log("Serving party with partyid")
+
 
             let party = await PartyModel.findById({ _id: req.params.party_id });
 
@@ -98,7 +100,6 @@ router.delete('/:party_id',
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-
 
             let party = await PartyModel.findOneAndRemove({ _id: req.params.party_id });
 

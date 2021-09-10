@@ -61,7 +61,6 @@ PartySchema.plugin(AutoIncrement, { id: 'party_seq', inc_field: 'partyId' });
 
 PartySchema.statics = {
     search: function (q, business, callback) {
-        console.log("Searching for:", q);
         return this.find({
             business: mongoose.Types.ObjectId(business),
             $or: [

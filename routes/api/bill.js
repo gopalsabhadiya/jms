@@ -24,7 +24,7 @@ router.post('/',
 
             let order = await OrderModel.findById(req.body.orderId);
             let party = await PartyModel.findById(order.party);
-            let business = await BusinessModel.findOne({ user: req.user.id });
+            let business = await BusinessModel.findOne({ _id: req.user.business });
             let itemDetailsRows = generateItemDetailsRows(order.items);
 
             if (!order) {
