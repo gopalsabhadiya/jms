@@ -52,6 +52,19 @@ const PartySchema = new mongoose.Schema({
     }
 });
 
-PartySchema.plugin(AutoIncrement, { id: 'party_seq', inc_field: 'partyId' })
+PartySchema.plugin(AutoIncrement, { id: 'party_seq', inc_field: 'partyId' });
+
+PartySchema.statics = {
+    search: function (q, business, callback) {
+        console.log("Searching for:", q);
+        return this.find({
+            business: mongoose.Types.ObjectId(business),
+            $or: [
+                { 'name': new RegExp(q, 'gi') },
+                { 'contactNo': new RegExp(q, 'gi') },
+            ]
+        }, callback).select({ 'name': 1, 'contactNo': 1, 'partyId': 1 });
+    }
+}
 
 module.exports = PartyModel = mongoose.model('party', PartySchema);

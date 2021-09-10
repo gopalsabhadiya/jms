@@ -9,7 +9,6 @@ const BusinessSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true,
-        unique: true
     },
     gstin: {
         type: String,
@@ -28,7 +27,6 @@ const BusinessSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true,
         ref: 'users'
     },
     bank: BankModel.schema,

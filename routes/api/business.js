@@ -22,10 +22,11 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'Business Already exists' }] });
             }
 
-            console.log(req.user);
 
             business = new BusinessModel(req.body);
+            business.users ? business.users.push(req.user.id) : business.users = [].push(req.user.business);
             business.user = req.user.id;
+            console.log(business);
 
             await business.save();
 
@@ -104,7 +105,7 @@ router.get(
     '/itemcollection',
     authMiddleware,
     async (req, res) => {
-        const itemCollection = await BusinessModel.findOne({ user: mongoose.Types.ObjectId(req.user.id) }).select('itemCollection');
+        const itemCollection = await BusinessModel.findOne({ _id: req.user.business }).select('itemCollection');
         console.log(itemCollection);
         return res.send(itemCollection);
     }

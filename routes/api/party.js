@@ -3,6 +3,8 @@ const router = express.Router();
 const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
 const PartyModel = require('../../model/party/PartyModel');
+const mongoose = require('mongoose');
+
 
 /**
  *  @route     POST api/users
@@ -118,39 +120,15 @@ router.post('/search',
         console.log("Serving new request search:", req.baseUrl);
         try {
             console.log(req.body)
-            let party = await PartyModel.aggregate([
-                {
-                    '$search': {
-                        'compound': {
-                            'should': [
-                                {
-                                    'autocomplete': {
-                                        'query': `${req.body.term}`,
-                                        'path': 'name',
-                                        'fuzzy': {
-                                            'maxEdits': 2
-                                        }
-                                    }
-                                }, {
-                                    'autocomplete': {
-                                        'query': `${req.body.term}`,
-                                        'path': 'contactNo',
-                                        'fuzzy': {
-                                            'maxEdits': 2
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }, {
-                    '$project': {
-                        'name': 1,
-                        'contactNo': 1,
-                        'partyId': 1
-                    }
+
+            let party = await PartyModel.search(req.body.term, req.user.business, (err, data) => {
+                if (err) {
+                    console.log(err);
                 }
-            ]);
+                else {
+                    return data;
+                }
+            });
 
             if (!party) {
                 console.error(`No Parties for User: ${user.email}`);
