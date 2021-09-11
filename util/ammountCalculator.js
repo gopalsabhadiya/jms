@@ -1,17 +1,17 @@
 const { LabourTypeEnum, ExtraChargablesTypeEnum } = require('./enum');
 
 
-const updateOrder = (order) => {
+const updateOrder = (order, items) => {
     try {
         let taxAmmount = 0;
         let netAmmount = 0;
         let scrapAmmount = 0;
 
-        prepareOrder(order);
+        prepareOrder(order, items);
 
-        for (let i = 0; i < order.items.length; i++) {
-            updateItem(order.items[i]);
-            netAmmount += order.items[i].netAmmount;
+        for (let i = 0; i < items.length; i++) {
+            updateItem(items[i]);
+            netAmmount += items[i].netAmmount;
         }
 
         order.netAmmount = netAmmount;
@@ -39,7 +39,7 @@ const updateOrder = (order) => {
             order.billOutstanding -= order.kasar;
         }
 
-        roundOff(order);
+        roundOff(order, items);
     }
     catch (err) {
         throw err;
@@ -111,10 +111,10 @@ const calculateExtraCharges = (item) => {
     }
 }
 
-const prepareOrder = (order) => {
+const prepareOrder = (order, items) => {
     try {
         console.log("preparing order:", order);
-        for (let item of order.items) {
+        for (let item of items) {
             item.grossWeight = parseFloat(item.grossWeight);
             item.netWeight = parseFloat(item.netWeight);
             item.carat = parseFloat(item.carat);
@@ -142,7 +142,7 @@ const prepareOrder = (order) => {
 };
 
 
-const roundOff = (order) => {
+const roundOff = (order, items) => {
     try {
         console.log("Rounding off:", order);
         order.netAmmount = Math.round(order.netAmmount * 1e2) / 1e2;
@@ -153,7 +153,7 @@ const roundOff = (order) => {
         if (order.scrap) {
             order.scrap.netAmmount = Math.round(order.scrap.netAmmount * 1e2) / 1e2;
         }
-        for (let item of order.items) {
+        for (let item of items) {
             item.netAmmount = Math.round(item.netAmmount * 1e2) / 1e2;
             item.itemAmmount = Math.round(item.itemAmmount * 1e2) / 1e2;
         }

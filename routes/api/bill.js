@@ -22,7 +22,23 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            let order = await OrderModel.findById(req.body.orderId);
+            let order = await OrderModel.aggregate([
+                {
+                    '$match': {
+                        '_id': mongoose.Types.ObjectId(req.body.orderId)
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'items',
+                        'localField': 'items',
+                        'foreignField': '_id',
+                        'as': 'items'
+                    }
+                }
+            ]);
+            order = order[0];
+
+            console.log("Retrived items:", order)
             let party = await PartyModel.findById(order.party);
             let business = await BusinessModel.findOne({ _id: req.user.business });
             let itemDetailsRows = generateItemDetailsRows(order.items);

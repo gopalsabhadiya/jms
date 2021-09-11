@@ -10,7 +10,11 @@ const OrderSchema = new mongoose.Schema({
     orderId: {
         type: Number
     },
-    items: [OrderItemModel.schema],
+    items: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'items'
+    }],
     netAmmount: {
         type: Number,
         required: true
@@ -18,6 +22,10 @@ const OrderSchema = new mongoose.Schema({
     gst: [GstModel.schema],
     scrap: ScrapModel.schema,
     payment: PaymentModel.schema,
+    receipt: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'receipts'
+    },
     totalAmmount: {
         type: Number,
         required: true

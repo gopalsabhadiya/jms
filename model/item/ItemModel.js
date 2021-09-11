@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ItemStatus } = require('../../util/enum');
 const ExtraChargablesModel = require('../order/ExtraChargablesModel');
 const LabourModel = require('../order/LabourModel');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
@@ -57,7 +58,12 @@ const ItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
         required: true
-    }
+    },
+    status: {
+        type: String,
+        enum: Object.values(ItemStatus),
+        required: true
+    },
 
 });
 
@@ -67,6 +73,7 @@ ItemSchema.statics = {
     searchByString: function (q, business, callback) {
         return this.find({
             business: mongoose.Types.ObjectId(business),
+            status: { $ne: ItemStatus.SOLD },
             $or: [
                 { huid: new RegExp(q, 'gi') },
                 { name: new RegExp(q, 'gi') },
@@ -76,6 +83,7 @@ ItemSchema.statics = {
     searchByItemId: function (q, business, callback) {
         return this.find({
             business: mongoose.Types.ObjectId(business),
+            status: { $ne: ItemStatus.SOLD },
             "$expr": {
                 "$regexMatch": {
                     "input": { "$toString": "$itemId" },

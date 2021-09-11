@@ -7,6 +7,10 @@ const OrderModel = require('../../model/order/OrderModel');
 const mongoose = require('mongoose');
 const { updateOrder } = require('../../util/ammountCalculator');
 const moment = require('moment');
+const { generateReceipt } = require('../../util/receiptGenerator');
+const ReceiptModel = require('../../model/paymentReceipt/ReceiptModel');
+const { ItemStatus } = require('../../util/enum');
+const ItemModel = require('../../model/item/ItemModel');
 
 const orderAggregate = [
     {
@@ -21,6 +25,14 @@ const orderAggregate = [
             'as': 'party'
         }
     }, {
+        '$lookup': {
+            'from': 'items',
+            'localField': 'items',
+            'foreignField': '_id',
+            'as': 'items'
+        }
+    },
+    {
         '$project': {
             'party': {
                 'name': 1,
@@ -104,7 +116,7 @@ router.post('/',
             let party = await PartyModel.findById({ _id: req.body.party });
             let order = new OrderModel(req.body);
 
-            updateOrder(order);
+            updateOrder(order, req.body.items);
 
             order.partyPreBalance = party.balance.toFixed(2);
             order.party = party._id;
@@ -115,6 +127,26 @@ router.post('/',
 
             order.user = req.user.id;
             order.business = req.user.business;
+
+            if (order.payment && order.payment.ammount) {
+                let receipt = new ReceiptModel(generateReceipt(req.user, order, party));
+                order.receipt = receipt._id;
+                await receipt.save();
+                order.receipt = receipt._id;
+            }
+
+            console.log("Your Body Here:", req.body)
+            for (let item of req.body.items) {
+                if (item._id) {
+                    item.status = ItemStatus.SOLD;
+                    await ItemModel.findOneAndUpdate({ _id: item._id }, item);
+                }
+                else {
+                    item = new ItemModel(item);
+                }
+                order.items ? order.items.push(item._id) : order.items = [].push(item._id);
+            }
+
             await order.save();
             await party.save();
 

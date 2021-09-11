@@ -4,6 +4,7 @@ const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
 const UserModel = require('../../model/user/UserModel');
 const ItemModel = require('../../model/item/ItemModel');
+const { ItemStatus } = require('../../util/enum');
 
 
 /**
@@ -19,8 +20,6 @@ router.post('/',
             if (req.body._id) {
                 let item = req.body;
                 item = await ItemModel.findOneAndUpdate({ _id: item._id }, item);
-                console.log(item);
-
                 return res.json(item);
             }
 
@@ -46,7 +45,7 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let items = await ItemModel.find({ business: req.user.business });
+            let items = await ItemModel.find({ business: req.user.business, status: { $ne: ItemStatus.SOLD } });
 
             if (items) {
                 return res.status(200).json(items);
@@ -55,7 +54,7 @@ router.get(
             return res.status(404).json({ msg: 'Parties not found' });
 
         } catch (error) {
-            console.error(`Error while fetching Party`);
+            console.error(`Error while fetching Item`);
             return res.status(500).send(error.message);
         }
     }
@@ -67,7 +66,7 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let item = await ItemModel.find({ _id: req.params.party_id });
+            let item = await ItemModel.findById(req.params.party_id);
 
             if (item) {
                 return res.status(200).json(item);
@@ -107,7 +106,6 @@ router.post('/search',
     async (req, res) => {
         console.log("Serving new request search:", req.baseUrl);
         try {
-            console.log(req.body)
 
             let item = await ItemModel.search(req.body.term, req.user.business, (err, data) => {
                 if (err) {
