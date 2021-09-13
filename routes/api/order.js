@@ -169,6 +169,26 @@ router.put('/',
         newOrder.party = party._id;
 
         newOrder.date = moment(newOrder.date, 'DD-MM-YYYY').format('YYYY-MM-DD[T00:00:00.000Z]');
+        let receipt = null;
+
+        if (oldOrder.receipt) {
+            receipt = await ReceiptModel.findById(oldOrder.receipt);
+            receipt.ammount = newOrder.payment.ammount;
+            receipt.type = newOrder.payment.type;
+            receipt.checkNumber = newOrder.payment.checkNumber;
+            receipt.bank = newOrder.payment.bank;
+        }
+        else {
+            receipt = new ReceiptModel(newOrder.payment);
+            receipt.business = req.user.business;
+            receipt.user = req.user.id;
+            receipt.party = oldOrder.party;
+            receipt.order = oldOrder._id;
+            newOrder.receipt = receipt._id
+        }
+
+
+        await ReceiptModel.findOneAndUpdate({ _id: receipt._id }, receipt, { upsert: true });
 
         await OrderModel.findOneAndUpdate({ _id: oldOrder._id }, newOrder);
         await PartyModel.findOneAndUpdate({ _id: party._id }, party);

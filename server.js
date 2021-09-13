@@ -20,6 +20,7 @@ app.use('/api/party', require('./routes/api/party'));
 app.use('/api/order', require('./routes/api/order'));
 app.use('/api/bill', require('./routes/api/bill'));
 app.use('/api/item', require('./routes/api/item'));
+app.use('/api/receipt', require('./routes/api/receipt'));
 
 
 const PORT = process.env.PORT || 8080;

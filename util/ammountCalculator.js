@@ -136,7 +136,6 @@ const prepareOrder = (order) => {
         if (order.payment && order.payment.ammount) {
             order.payment.ammount = parseFloat(order.payment.ammount);
         }
-        console.log("Prepared order:", order);
     } catch (err) {
         throw err;
     }
@@ -145,7 +144,6 @@ const prepareOrder = (order) => {
 
 const roundOff = (order) => {
     try {
-        console.log("Rounding off:", order);
         order.netAmmount = Math.round(order.netAmmount * 1e2) / 1e2;
         order.totalAmmount = Math.round(order.totalAmmount * 1e2) / 1e2;
         order.scrapAmmount = Math.round(order.scrapAmmount * 1e2) / 1e2;

@@ -6,7 +6,7 @@ const generateReceipt = (user, order, party) => {
     receipt.party = party._id;
     receipt.ammount = order.payment.ammount;
     receipt.bank = order.payment.bank;
-    receipt.mode = order.payment.type;
+    receipt.type = order.payment.type;
     receipt.panNo = order.payment.panNo;
     receipt.aadharNo = order.payment.aadharNo;
     console.log("Receipt:", receipt);

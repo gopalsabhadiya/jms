@@ -38,14 +38,19 @@ const ReceiptSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'orders'
     },
-    mode: {
+    type: {
         type: String,
         enum: Object.values(PaymentTypeEnum),
         required: true
     },
     invalidated: {
         type: Boolean
-    }
+    },
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
 });
 
 module.exports = ReceiptModel = mongoose.model('receipt', ReceiptSchema);
