@@ -43,6 +43,9 @@ const ReceiptSchema = new mongoose.Schema({
         enum: Object.values(PaymentTypeEnum),
         required: true
     },
+    invalidated: {
+        type: Boolean
+    }
 });
 
 module.exports = ReceiptModel = mongoose.model('receipt', ReceiptSchema);

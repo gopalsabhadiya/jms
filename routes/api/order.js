@@ -25,14 +25,6 @@ const orderAggregate = [
             'as': 'party'
         }
     }, {
-        '$lookup': {
-            'from': 'items',
-            'localField': 'items',
-            'foreignField': '_id',
-            'as': 'items'
-        }
-    },
-    {
         '$project': {
             'party': {
                 'name': 1,
@@ -72,7 +64,8 @@ const orderAggregate = [
 const orderDetailsAggregate = [
     {
         '$match': {
-            'business': ''
+            'business': '',
+            invalidated: { $ne: true }
         }
     }, {
         '$lookup': {
@@ -116,7 +109,7 @@ router.post('/',
             let party = await PartyModel.findById({ _id: req.body.party });
             let order = new OrderModel(req.body);
 
-            updateOrder(order, req.body.items);
+            updateOrder(order);
 
             order.partyPreBalance = party.balance.toFixed(2);
             order.party = party._id;
@@ -135,17 +128,20 @@ router.post('/',
                 order.receipt = receipt._id;
             }
 
-            console.log("Your Body Here:", req.body)
-            for (let item of req.body.items) {
-                if (item._id) {
-                    item.status = ItemStatus.SOLD;
-                    await ItemModel.findOneAndUpdate({ _id: item._id }, item);
+            for (let item of order.items) {
+                let stockItem = null;
+                if (item.stockItemId) {
+                    stockItem = await ItemModel.findById(item.stockItemId);
+                    stockItem.stockPieces > item.pieces
+                        ? stockItem.stockPieces = stockItem.stockPieces - item.pieces
+                        : stockItem.stockPieces = 0;
                 }
                 else {
-                    item = new ItemModel(item);
+                    stockItem = new ItemModel(item);
                 }
-                order.items ? order.items.push(item._id) : order.items = [].push(item._id);
+                await ItemModel.findOneAndUpdate({ _id: stockItem._id }, stockItem, { upsert: true });
             }
+
 
             await order.save();
             await party.save();
@@ -178,8 +174,6 @@ router.put('/',
         await PartyModel.findOneAndUpdate({ _id: party._id }, party);
 
         return res.json(newOrder);
-
-
     }
 )
 
@@ -189,15 +183,33 @@ router.delete(
     async (req, res) => {
         console.log("Serving delete request:", req.baseUrl);
         try {
-            console.log(req.params.user_id)
 
-            await OrderModel.findOneAndRemove({ _id: req.params.order_id });
+            let order = await OrderModel.findById(req.params.order_id);
+            order.invalidated = true;
 
+            for (let [index, item] of order.items.entries()) {
+                item = await ItemModel.findById(item.stockItemId);
+                item.stockPieces = item.stockPieces + parseInt(order.items[index].pieces);
+                await item.save();
+            }
 
-            return res.json({ msg: 'User Deleted successfully' });
+            let party = await PartyModel.findById(order.party);
+            party.balance = party.balance + order.billOutstanding;
+            if (order.receipt) {
+                let receipt = await ReceiptModel.findById(order.receipt);
+                receipt.invalidated = true;
+                party.balance = party.balance + receipt.ammount;
+                receipt.save();
+            }
+
+            await order.save();
+            await party.save();
+
+            return res.json({ msg: 'Order Deleted successfully' });
 
         } catch (error) {
             console.error(`Error while fetching User: ${req.user.id}`);
+            console.log(error)
             return res.status(500).send(error.message);
         }
     }

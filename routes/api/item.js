@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-const UserModel = require('../../model/user/UserModel');
 const ItemModel = require('../../model/item/ItemModel');
 const { ItemStatus } = require('../../util/enum');
 
@@ -45,7 +43,7 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let items = await ItemModel.find({ business: req.user.business, status: { $ne: ItemStatus.SOLD } });
+            let items = await ItemModel.find({ business: req.user.business, stockPieces: { $gt: 0 } });
 
             if (items) {
                 return res.status(200).json(items);
@@ -61,15 +59,19 @@ router.get(
 );
 
 router.get(
-    '/:party_id',
+    '/:item_id',
     authMiddleware,
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let item = await ItemModel.findById(req.params.party_id);
+            let item = await ItemModel.findById(req.params.item_id).lean().exec();
+
+            item.stockItemId = item._id;
+
+            console.log("Serving item: ", item);
 
             if (item) {
-                return res.status(200).json(item);
+                return res.status(200).json({ ...item, stockItemId: item._id });
             }
 
             return res.status(404).json({ msg: 'Item not found' });

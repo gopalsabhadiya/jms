@@ -39,8 +39,12 @@ const OrderItemSchema = new mongoose.Schema({
     extras: [ExtraChargablesModel.schema],
     huid: {
         type: String,
+    },
+    stockItemId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'items',
+        required: true
     }
-
 });
 
 module.exports = OrderItemModel = mongoose.model('orderItem', OrderItemSchema);

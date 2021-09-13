@@ -31,9 +31,6 @@ const ItemSchema = new mongoose.Schema({
     carat: {
         type: Number,
     },
-    rate: {
-        type: Number,
-    },
     labour: LabourModel.schema,
     itemAmmount: {
         type: Number,
@@ -41,9 +38,9 @@ const ItemSchema = new mongoose.Schema({
     netAmmount: {
         type: Number,
     },
-    pieces: {
+    stockPieces: {
         type: Number,
-        required: true
+        default: 0
     },
     extras: [ExtraChargablesModel.schema],
     huid: {
@@ -58,12 +55,7 @@ const ItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
         required: true
-    },
-    status: {
-        type: String,
-        enum: Object.values(ItemStatus),
-        required: true
-    },
+    }
 
 });
 
@@ -73,7 +65,7 @@ ItemSchema.statics = {
     searchByString: function (q, business, callback) {
         return this.find({
             business: mongoose.Types.ObjectId(business),
-            status: { $ne: ItemStatus.SOLD },
+            stockPieces: { $gt: 0 },
             $or: [
                 { huid: new RegExp(q, 'gi') },
                 { name: new RegExp(q, 'gi') },
@@ -83,7 +75,7 @@ ItemSchema.statics = {
     searchByItemId: function (q, business, callback) {
         return this.find({
             business: mongoose.Types.ObjectId(business),
-            status: { $ne: ItemStatus.SOLD },
+            stockPieces: { $gt: 0 },
             "$expr": {
                 "$regexMatch": {
                     "input": { "$toString": "$itemId" },

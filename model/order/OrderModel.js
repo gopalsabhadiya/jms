@@ -10,11 +10,7 @@ const OrderSchema = new mongoose.Schema({
     orderId: {
         type: Number
     },
-    items: [{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'items'
-    }],
+    items: [OrderItemModel.schema],
     netAmmount: {
         type: Number,
         required: true
@@ -73,6 +69,9 @@ const OrderSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    invalidated: {
+        type: Boolean,
     }
 });
 
