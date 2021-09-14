@@ -17,7 +17,6 @@ const OrderItemSchema = new mongoose.Schema({
     },
     carat: {
         type: Number,
-        required: true
     },
     rate: {
         type: Number,

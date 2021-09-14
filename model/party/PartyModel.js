@@ -17,11 +17,13 @@ const PartySchema = new mongoose.Schema({
     },
     gstin: {
         type: String,
-        unique: true
+        unique: true,
+        sparse: true
     },
     balance: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     address: {
         type: String,

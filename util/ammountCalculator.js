@@ -39,6 +39,7 @@ const updateOrder = (order) => {
         }
 
         roundOff(order);
+
     }
     catch (err) {
         throw err;
@@ -52,12 +53,16 @@ const updateItem = (item) => {
 
         let labourCharges = calculateLabourCharges(item);
         let extraCharges = calculateExtraCharges(item);
-        let itemAmmount = item.netWeight * item.rate / 10;
+        let itemAmmount = item.netWeight * (item.rate / 10) * item.pieces;
 
         console.log(itemAmmount);
 
         item.itemAmmount = itemAmmount;
         item.netAmmount = itemAmmount + labourCharges + extraCharges;
+
+
+        (item.carat === 0 || !item.carat) && (item.carat = null)
+
     }
     catch (err) {
         throw err;
@@ -70,9 +75,9 @@ const calculateLabourCharges = (item) => {
         if (item.labour) {
             switch (item.labour.type) {
                 case LabourTypeEnum.PERCENTAGE:
-                    return (item.netWeight * item.rate / 10) * item.labour.value * 0.01;
+                    return (item.netWeight * (item.rate / 10) * item.pieces) * item.labour.value * 0.01;
                 case LabourTypeEnum.PER_GRAM:
-                    return item.netWeight * item.labour.value;
+                    return item.netWeight * item.labour.value * item.pieces;
                 case LabourTypeEnum.TOTAL:
                     return item.labour.value;
                 default:

@@ -13,7 +13,8 @@ const BusinessSchema = new mongoose.Schema({
     gstin: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        sparse: true
     },
     email: {
         type: String,

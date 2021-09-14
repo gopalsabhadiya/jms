@@ -17,7 +17,8 @@ router.post('/',
         try {
             if (req.body._id) {
                 let item = req.body;
-                item = await ItemModel.findOneAndUpdate({ _id: item._id }, item);
+                item = await ItemModel.findOneAndUpdate({ _id: item._id }, item, { new: true });
+                console.log("Updated Item", item);
                 return res.json(item);
             }
 
