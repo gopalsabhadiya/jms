@@ -4,11 +4,13 @@ const authMiddleware = require('../../middleware/auth');
 const ReceiptModel = require('../../model/paymentReceipt/ReceiptModel');
 const mongoose = require('mongoose');
 const PartyModel = require('../../model/party/PartyModel');
+const { RECEIPT_HTML } = require('../../util/staticdata');
 
 const searchReceipts = [
     {
         '$match': {
-            'business': ''
+            'business': '',
+            invalidated: { $ne: true }
         }
     }, {
         '$lookup': {
@@ -92,10 +94,11 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
+            console.log("Id:", req.params.receipt_id);
             let receipt = await ReceiptModel.findById(req.params.receipt_id);
 
             if (receipt) {
-                return res.status(200).json(item);
+                return res.status(200).json(receipt);
             }
 
             return res.status(404).json({ msg: 'Receipt not found' });
@@ -107,14 +110,39 @@ router.get(
     }
 );
 
+router.post(
+    '/print',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+            console.log("Printing")
+            let receipt = await ReceiptModel.findById(req.body.receiptId);
+            let party = await PartyModel.findById(receipt.party);
+            let business = await BusinessModel.findById(req.user.business);
+
+            return res.json(eval("`" + RECEIPT_HTML + "`"));
+
+        } catch (error) {
+            console.error(`Error while fetching Receipt`);
+            console.log(error)
+            return res.status(500).send(error.message);
+        }
+    }
+);
+
 router.delete(
     '/:receipt_id',
     authMiddleware,
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-
-            await ReceiptModel.findOneAndRemove({ _id: req.params.receipt_id });
+            let receipt = await ReceiptModel.findById(req.params.receipt_id);
+            receipt.invalidated = true;
+            let party = await PartyModel.findById(receipt.party);
+            party.balance = party.balance + receipt.ammount;
+            await receipt.save();
+            await party.save();
 
             return res.json({ msg: 'Receipt Deleted successfully' });
 

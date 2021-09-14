@@ -1,0 +1,403 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>${party.name + "-" + receipt._id}</title>
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FAFAFA;
+            font: 10pt "Tahoma";
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .page {
+            padding: 0.5cm;
+            margin: 1cm auto;
+            background: white;
+        }
+
+        .subpage {
+            border: 2px solid;
+            outline: 0.5cm #ffffff solid;
+            position: relative;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            .page {
+                margin: 0;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
+            }
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        table {
+            background-color: transparent;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        .font13 {
+            font-size: 11px;
+        }
+
+        .table>caption+thead>tr:first-child>td,
+        .table>caption+thead>tr:first-child>th,
+        .table>colgroup+thead>tr:first-child>td,
+        .table>colgroup+thead>tr:first-child>th,
+        .table>thead:first-child>tr:first-child>td,
+        .table>thead:first-child>tr:first-child>th {
+            border-top: 0;
+        }
+
+        .table-bordered {
+            border: 1px solid rgb(0, 0, 0);
+        }
+
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border-bottom-width: 2px;
+        }
+
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>td,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border: 1px solid rgb(0, 0, 0);
+        }
+
+
+        .table-column-bordered {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid rgb(0, 0, 0);
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .table-column-bordered>thead>tr>td,
+        .table-column-bordered>thead>tr>th {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid rgb(0, 0, 0);
+        }
+
+        .table-column-bordered>tbody>tr>td,
+        .table-column-bordered>tbody>tr>th,
+        .table-column-bordered>tfoot>tr>td,
+        .table-column-bordered>tfoot>tr>th,
+        .table-column-bordered>thead>tr>td,
+        .table-column-bordered>thead>tr>th {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-top: 0px solid rgb(0, 0, 0);
+            padding: 4px;
+            line-height: 1.42857143;
+            vertical-align: top;
+
+        }
+
+        .table>thead>tr>th {
+            vertical-align: bottom;
+            border-bottom: 2px solid rgb(0, 0, 0);
+        }
+
+        .table>tbody>tr>td,
+        .table>tbody>tr>th,
+        .table>tfoot>tr>td,
+        .table>tfoot>tr>th,
+        .table>thead>tr>td,
+        .table>thead>tr>th {
+            padding: 4px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid rgb(0, 0, 0);
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td,
+        th {
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        user agent stylesheet th {
+            display: table-cell;
+            vertical-align: inherit;
+            font-weight: bold;
+            text-align: -internal-center;
+        }
+
+        p {
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+
+        .no-padding td {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="page">
+            <div class="subpage" id="subpage">
+                <div id="header-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td style="font-size: 25px;
+                                                    text-align: center;"
+                                                    colspan="2"><b>${business.name}</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Address :</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>
+                                                        ${business.address}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>GSTIN :</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>${business.gstin}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Contact No :</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>
+                                                        ${business.contactNo}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="table" style="margin-top:
+                                        50px">
+                                        <tbody>
+                                            <tr style="font-size: 13px;">
+                                                <td class="font13">
+                                                    <b>Receipt Number :</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>
+                                                        ${receipt.receiptId}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Date: </b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>
+                                                        ${receipt.date.getDate()}
+                                                        ${receipt.date.toLocaleString("default",
+                                                        { month: "long" })}
+                                                        ${receipt.date.getFullYear()}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="font-size: 17px;">Party
+                                    Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding-top: 0px; padding-bottom:
+                                    0px;
+                                    padding-right: 0px;">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <b>Name: </b>
+                                                </td>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <span>${party.name}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font13">
+                                                    <b>Contact No:</b>
+                                                </td>
+                                                <td class="font13">
+                                                    <span>${party.contactNo}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td style="padding-top: 0px; padding-bottom:
+                                    0px;
+                                    padding-right: 0px; padding-left: 0px;">
+                                    <table class="table" style="padding:0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <b>GSTIN: </b>
+                                                </td>
+                                                <td class="font13"
+                                                    style="border-top-width:
+                                                    0px;">
+                                                    <span>${party.gstin}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font13" colspan="4">
+                                    <b>Address:</b>
+                                    <span>${party.address}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="footer-content" id="footer-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="4" style="font-size: 15px;">Payment
+                                    Details (${receipt.type})</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td class="font13">
+                                    <b>Ammount:</b>
+                                </td>
+                                <td class="font13">
+                                    <span>${receipt.ammount}</span>
+
+                                </td>
+                                <td class="font13">
+                                    <b>Check No.: </b>
+                                </td>
+                                <td class="font13">
+                                    <span>${(receipt.type)==="Check" ?
+                                        receipt.checkNumber : "NIL"}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font13">
+                                    <b>Bank:</b>
+                                </td>
+                                <td class="font13">
+                                    <span>${(receipt.type)==="Check" ?
+                                        receipt.bank : "NIL"}</span>
+                                </td>
+                                <td class="font13">
+                                    <b>PAN No.: </b><span>${receipt.panNo}</span>
+                                </td>
+                                <td class="font13">
+                                    <b>AADHAR No.: </b><span>${receipt.aadharNo}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td class="font13" style="padding:6px 6px 6px
+                                    6px">Party Signature:</td>
+                                <td class="font13" style="padding:px 6px 6px
+                                    6px">Signature:</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

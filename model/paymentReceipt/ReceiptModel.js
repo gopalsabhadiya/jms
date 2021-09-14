@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const { PaymentTypeEnum } = require('../../util/enum');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
 
 const ReceiptSchema = new mongoose.Schema({
+    receiptId: {
+        type: Number
+    },
     bank: {
         type: String,
     },
@@ -52,5 +57,7 @@ const ReceiptSchema = new mongoose.Schema({
         default: Date.now
     },
 });
+
+ReceiptSchema.plugin(AutoIncrement, { id: 'receipt_seq', inc_field: 'receiptId' });
 
 module.exports = ReceiptModel = mongoose.model('receipt', ReceiptSchema);
