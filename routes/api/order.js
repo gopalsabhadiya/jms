@@ -142,6 +142,7 @@ router.post('/',
                 }
                 else {
                     stockItem = new ItemModel(item);
+                    item.stockItemId = stockItem._id;
                 }
                 await ItemModel.findOneAndUpdate({ _id: stockItem._id }, stockItem, { upsert: true });
             }
