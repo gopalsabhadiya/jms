@@ -116,7 +116,6 @@ router.post(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            console.log("Printing")
             let receipt = await ReceiptModel.findById(req.body.receiptId);
             let party = await PartyModel.findById(receipt.party);
             let business = await BusinessModel.findById(req.user.business);

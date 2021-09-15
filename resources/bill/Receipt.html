@@ -245,7 +245,7 @@
                                         <tbody>
                                             <tr style="font-size: 13px;">
                                                 <td class="font13">
-                                                    <b>Receipt Number :</b>
+                                                    <b>Receipt No:</b>
                                                 </td>
                                                 <td class="font13">
                                                     <span>
@@ -259,10 +259,14 @@
                                                 </td>
                                                 <td class="font13">
                                                     <span>
-                                                        ${receipt.date.getDate()}
-                                                        ${receipt.date.toLocaleString("default",
-                                                        { month: "long" })}
-                                                        ${receipt.date.getFullYear()}
+                                                        ${
+                                                        receipt.date.getDate()
+                                                        }-${
+                                                        receipt.date.toLocaleString("default",{
+                                                        month: "long" })
+                                                        }-${
+                                                        receipt.date.getFullYear()
+                                                        }
                                                     </span>
                                                 </td>
                                             </tr>
@@ -324,7 +328,8 @@
                                                 <td class="font13"
                                                     style="border-top-width:
                                                     0px;">
-                                                    <span>${party.gstin}</span>
+                                                    <span>${party.gstin ?
+                                                        party.gstin : "-"}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -334,7 +339,7 @@
                             <tr>
                                 <td class="font13" colspan="4">
                                     <b>Address:</b>
-                                    <span>${party.address}</span>
+                                    <span>${party.address ? party.address : "-"}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -356,15 +361,16 @@
                                     <b>Ammount:</b>
                                 </td>
                                 <td class="font13">
-                                    <span>${receipt.ammount}</span>
+                                    <span>${receipt.ammount ? receipt.amount :
+                                        "-"}</span>
 
                                 </td>
                                 <td class="font13">
                                     <b>Check No.: </b>
                                 </td>
                                 <td class="font13">
-                                    <span>${(receipt.type)==="Check" ?
-                                        receipt.checkNumber : "NIL"}</span>
+                                    <span>${receipt.checkNumber ? receipt.number
+                                        : "-"}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -372,14 +378,15 @@
                                     <b>Bank:</b>
                                 </td>
                                 <td class="font13">
-                                    <span>${(receipt.type)==="Check" ?
-                                        receipt.bank : "NIL"}</span>
+                                    <span>${receipt.bank ? receipt.bank : "-"}</span>
                                 </td>
                                 <td class="font13">
-                                    <b>PAN No.: </b><span>${receipt.panNo}</span>
+                                    <b>PAN No.: </b><span>${receipt.panNo ?
+                                        receipt.panNo : "-"}</span>
                                 </td>
                                 <td class="font13">
-                                    <b>AADHAR No.: </b><span>${receipt.aadharNo}</span>
+                                    <b>AADHAR No.: </b><span>${receipt.aadharNo
+                                        ? receipt.aadharNo : "-"}</span>
                                 </td>
                             </tr>
                         </tbody>
