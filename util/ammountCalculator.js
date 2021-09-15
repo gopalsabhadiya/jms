@@ -24,9 +24,16 @@ const updateOrder = (order) => {
 
         order.totalAmmount = order.netAmmount + taxAmmount;
 
-        if (order.scrap) {
+        console.log("Your Scrap Details:", order.scrap);
+
+        if (order.scrap && order.scrap.netWeight && order.scrap.rate) {
             scrapAmmount = order.scrap.netWeight * order.scrap.rate / 10;
             order.scrap.netAmmount = scrapAmmount;
+        }
+        else {
+            console.log("Into else")
+            delete order.scrap;
+            console.log(order);
         }
 
         order.scrapAmmount = scrapAmmount;

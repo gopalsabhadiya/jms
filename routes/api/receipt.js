@@ -143,11 +143,10 @@ router.delete(
             party.balance = party.balance + receipt.ammount;
             await receipt.save();
             await party.save();
-
             return res.json({ msg: 'Receipt Deleted successfully' });
 
         } catch (error) {
-            console.error(`Error while fetching Party: ${req.params.party_id}`);
+            console.error(`Error while deleting receipt: ${req.params.receipt_id}`);
             return res.status(500).send(error.message);
         }
     }

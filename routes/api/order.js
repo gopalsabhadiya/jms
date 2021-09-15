@@ -107,9 +107,8 @@ router.post('/',
         try {
 
             let party = await PartyModel.findById({ _id: req.body.party });
+            updateOrder(req.body);
             let order = new OrderModel(req.body);
-
-            updateOrder(order);
 
             order.partyPreBalance = party.balance.toFixed(2);
             order.party = party._id;
@@ -121,7 +120,12 @@ router.post('/',
             order.user = req.user.id;
             order.business = req.user.business;
 
-            if (order.payment && order.payment.ammount) {
+            if (
+                order.payment
+                && order.payment.ammount
+                && order.payment.ammount !== 0
+                && order.payment.type
+            ) {
                 let receipt = new ReceiptModel(generateReceipt(req.user, order, party));
                 order.receipt = receipt._id;
                 await receipt.save();
