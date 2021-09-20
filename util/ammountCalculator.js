@@ -24,14 +24,11 @@ const updateOrder = (order) => {
 
         order.totalAmmount = order.netAmmount + taxAmmount;
 
-        console.log("Your Scrap Details:", order.scrap);
-
         if (order.scrap && order.scrap.netWeight && order.scrap.rate) {
             scrapAmmount = order.scrap.netWeight * order.scrap.rate / 10;
             order.scrap.netAmmount = scrapAmmount;
         }
         else {
-            console.log("Into else")
             delete order.scrap;
             console.log(order);
         }
@@ -126,7 +123,6 @@ const calculateExtraCharges = (item) => {
 
 const prepareOrder = (order) => {
     try {
-        console.log("preparing order:", order);
         for (let item of order.items) {
             item.grossWeight = parseFloat(item.grossWeight);
             item.netWeight = parseFloat(item.netWeight);
@@ -165,6 +161,8 @@ const roundOff = (order) => {
             order.scrap.netAmmount = Math.round(order.scrap.netAmmount * 1e2) / 1e2;
         }
         for (let item of order.items) {
+            item.netWeight = roundTo(item.netWeight, 3);
+            item.grossWeight = roundTo(item.grossWeight, 3);
             item.netAmmount = Math.round(item.netAmmount * 1e2) / 1e2;
             item.itemAmmount = Math.round(item.itemAmmount * 1e2) / 1e2;
         }
@@ -172,5 +170,24 @@ const roundOff = (order) => {
     catch (err) {
         throw err;
     }
-}
-module.exports = { updateOrder, updateItem }
+};
+
+function roundTo(n, digits) {
+    var negative = false;
+    if (digits === undefined) {
+        digits = 0;
+    }
+    if (n < 0) {
+        negative = true;
+        n = n * -1;
+    }
+    var multiplicator = Math.pow(10, digits);
+    n = parseFloat((n * multiplicator).toFixed(11));
+    n = (Math.round(n) / multiplicator).toFixed(digits);
+    if (negative) {
+        n = (n * -1).toFixed(digits);
+    }
+    console.log("Rounded no",n);
+    return n;
+};
+module.exports = { updateOrder, updateItem, roundOff }

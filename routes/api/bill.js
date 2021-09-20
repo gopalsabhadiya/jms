@@ -8,6 +8,7 @@ const BusinessModel = require('../../model/business/BusinessModel');
 const mongoose = require('mongoose');
 const { BILLHTML } = require('../../util/staticdata');
 const { ExtraChargablesTypeEnum, LabourTypeEnum } = require('../../util/enum');
+const { roundOff } = require('../../util/ammountCalculator');
 
 
 
@@ -26,18 +27,16 @@ router.post('/',
             let party = await PartyModel.findById(order.party);
             let business = await BusinessModel.findOne({ _id: req.user.business });
             let itemDetailsRows = generateItemDetailsRows(order.items);
+            roundOff(order);
+            console.log(order)
+
 
             if (!order) {
                 console.error(`Order: ${req.body.orderId} doesn't exists`);
                 return res.status(400).json({ errors: [{ msg: 'Order doesn\'t exists' }] });
             }
 
-            console.log(`${order.netAmmount * order.gst.find((gst) => gst.type === "CGST").value * 0.01}`);
-
-
             return res.json(eval("`" + BILLHTML + "`"));
-
-
 
         } catch (error) {
             console.log(error);
@@ -50,10 +49,8 @@ const generateItemDetailsRows = (items) => {
     let tableData = "";
     for (let i = 0; i < items.length; i++) {
         let extraDetails = prepareExtraDetails(items[i]);
-        console.log('extra details: ', extraDetails);
         tableData += `<tr><td class="font13">${i + 1}</td><td class="font13">${extraDetails.name}</td><td class="font13">${extraDetails.pieces}<td class="font13">${items[i].grossWeight}</td></td><td class="font13">${items[i].netWeight}</td><td class="font13">${items[i].carat ? items[i].carat : '-'}</td><td class="font13">${extraDetails.rate}</td><td class="font13" colspan="2">${extraDetails.itemAmmount}</td><td class="font13">${extraDetails.labour}</td><td class="font13">${items[i].netAmmount}</td></tr>`;
     }
-    console.log(tableData);
     return tableData;
 }
 
@@ -104,9 +101,6 @@ const prepareExtraDetails = (item) => {
                 break;
         }
     }
-
-    console.log(extraDetails)
-
 
     return extraDetails;
 }

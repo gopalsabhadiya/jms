@@ -150,7 +150,6 @@ router.post('/',
                 await ItemModel.findOneAndUpdate({ _id: stockItem._id }, stockItem, { upsert: true });
             }
 
-
             await order.save();
             await party.save();
 
@@ -226,11 +225,10 @@ router.delete(
             }
 
             let party = await PartyModel.findById(order.party);
-            party.balance = party.balance + order.billOutstanding;
+            party.balance = party.balance + order.partyPreBalance - order.partyPostBalance;
             if (order.receipt) {
                 let receipt = await ReceiptModel.findById(order.receipt);
                 receipt.invalidated = true;
-                party.balance = party.balance + receipt.ammount -order.billOutstanding;
                 receipt.save();
             }
 

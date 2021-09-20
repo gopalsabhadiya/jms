@@ -73,7 +73,7 @@ router.post('/',
             receipt.party = req.body.party;
 
             let party = await PartyModel.findById(receipt.party);
-            party.balance = party.balance - receipt.ammount;
+            party.balance = party.balance + receipt.ammount;
             await PartyModel.findOneAndUpdate({ _id: party._id }, party);
             receipt = await receipt.save();
             receipt = receipt.toJSON();
@@ -139,7 +139,7 @@ router.delete(
             let receipt = await ReceiptModel.findById(req.params.receipt_id);
             receipt.invalidated = true;
             let party = await PartyModel.findById(receipt.party);
-            party.balance = party.balance + receipt.ammount;
+            party.balance = party.balance - receipt.ammount;
             await receipt.save();
             await party.save();
             return res.json({ msg: 'Receipt Deleted successfully' });
