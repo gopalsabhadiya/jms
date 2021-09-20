@@ -9,6 +9,7 @@ const generateReceipt = (user, order, party) => {
     receipt.type = order.payment.type;
     receipt.panNo = order.payment.panNo;
     receipt.aadharNo = order.payment.aadharNo;
+    receipt.checkNumber = order.payment.checkNumber;
     console.log("Receipt:", receipt);
     return receipt;
 }

@@ -136,6 +136,9 @@ router.post('/',
                 let stockItem = null;
                 if (item.stockItemId) {
                     stockItem = await ItemModel.findById(item.stockItemId);
+                    if (stockItem.stockPieces === 0) {
+                        return res.status(304).json({});
+                    }
                     stockItem.stockPieces > item.pieces
                         ? stockItem.stockPieces = stockItem.stockPieces - item.pieces
                         : stockItem.stockPieces = 0;
@@ -227,7 +230,7 @@ router.delete(
             if (order.receipt) {
                 let receipt = await ReceiptModel.findById(order.receipt);
                 receipt.invalidated = true;
-                party.balance = party.balance + receipt.ammount;
+                party.balance = party.balance + receipt.ammount -order.billOutstanding;
                 receipt.save();
             }
 
