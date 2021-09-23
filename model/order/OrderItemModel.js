@@ -42,7 +42,6 @@ const OrderItemSchema = new mongoose.Schema({
     stockItemId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'items',
-        required: true
     }
 });
 

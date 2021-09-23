@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const GstModel = require('./GstModel');
 const ScrapModel = require('./ScrapModel');
-const PaymentModel = require('./PaymentModel');
 const OrderItemModel = require('./OrderItemModel');
-
 
 const OrderSchema = new mongoose.Schema({
     orderId: {
@@ -17,11 +15,15 @@ const OrderSchema = new mongoose.Schema({
     },
     gst: [GstModel.schema],
     scrap: ScrapModel.schema,
-    payment: PaymentModel.schema,
-    receipt: {
+    fulfilled: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    receipts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'receipts'
-    },
+    }],
     totalAmmount: {
         type: Number,
         required: true
@@ -47,14 +49,6 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: 'parties'
     },
-    partyPreBalance: {
-        type: Number,
-        required: true
-    },
-    partyPostBalance: {
-        type: Number,
-        required: true
-    },
     business: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
@@ -65,6 +59,10 @@ const OrderSchema = new mongoose.Schema({
         ref: 'users',
         required: true
     },
+    deletedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+    },
     date: {
         type: Date,
         required: true,
@@ -74,6 +72,12 @@ const OrderSchema = new mongoose.Schema({
         type: Boolean,
     }
 });
+
+OrderSchema.statics = {
+    updateReceipt: function (orderId, receiptId, callback) {
+        return this.findByIdAndUpdate(orderId, { $push: { receipts: receiptId } }, callback);
+    }
+}
 
 OrderSchema.plugin(AutoIncrement, { id: 'order_seq', inc_field: 'orderId' })
 

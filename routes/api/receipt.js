@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/auth');
-const ReceiptModel = require('../../model/paymentReceipt/ReceiptModel');
 const mongoose = require('mongoose');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
+const ReceiptModel = require('../../model/receipt/ReceiptModel');
 
 const searchReceipts = [
     {

@@ -12,6 +12,10 @@ const GstSchema = new mongoose.Schema({
         enum: Object.values(GstTypeEnum),
         required: true
     },
+    ammount: {
+        type: Number,
+        required: true
+    },
 });
 
 module.exports = GstModel = mongoose.model('gst', GstSchema);

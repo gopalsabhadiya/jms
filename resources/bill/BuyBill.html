@@ -454,9 +454,9 @@
                                     "CGST").value}%:</b>
                             </td>
                             <td class="font13" style="padding-top:2px;
-                                padding-bottom:2px;">${order.netAmmount *
-                                order.gst.find((gst) => gst.type ===
-                                "CGST").value * 0.01}</td>
+                                padding-bottom:2px;">
+                                ${order.gst.find((gst) => gst.type === "CGST").ammount}
+                            </td>
                         </tr>
                         <tr style="border-bottom: 1px solid black;">
                             <td class="font13" colspan="2"
@@ -465,9 +465,9 @@
                                     "SGST").value}%:</b>
                             </td>
                             <td class="font13" style="padding-top:2px;
-                                padding-bottom:2px;">${order.netAmmount *
-                                order.gst.find((gst) => gst.type ===
-                                "SGST").value * 0.01}</td>
+                                padding-bottom:2px;">
+                            ${order.gst.find((gst) => gst.type === "SGST").ammount}    
+                            </td>
                         </tr>
                         <tr style="border-bottom: 1px solid black;">
                             <td class="font13" colspan="2"
@@ -524,60 +524,6 @@
                 </table>
 
                 <div class="footer-content" id="footer-content">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th colspan="4" style="font-size: 15px;">
-                                    Payment Details (${
-                                    order.payment && order.payment.type ?
-                                    order.payment.type : "-"
-                                    })
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-
-                                <td class="font13">
-                                    <b>Ammount:</b>
-                                </td>
-                                <td class="font13">
-                                    <span>${order.payment &&
-                                        order.payment.ammount ?
-                                        order.payment.ammount : "-"}</span>
-                                </td>
-                                <td class="font13">
-                                    <b>Check No.: </b>
-                                </td>
-                                <td class="font13">
-                                    <span>${order.payment &&
-                                        order.payment.checkNumber ?
-                                        order.payment.checkNumber : "-"}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font13">
-                                    <b>Bank:</b>
-                                </td>
-                                <td class="font13">
-                                    <span>${order.payment &&
-                                        order.payment.bank ? order.payment.bank
-                                        : "-"}</span>
-                                </td>
-                                <td class="font13">
-                                    <b>PAN No.: </b><span>${order.payment &&
-                                        order.payment.panNo ?
-                                        order.payment.panNo : "-"}</span>
-                                </td>
-                                <td class="font13">
-                                    <b>AADHAR No.: </b><span>${order.payment &&
-                                        order.payment.aadharNo ?
-                                        order.payment.aadharNo : "-"}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
                     <table>
                         <thead>
                             <tr>

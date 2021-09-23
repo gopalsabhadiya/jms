@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { PaymentTypeEnum } = require('../../util/enum');
+const PaymentModel = require('./PaymentModel');
+const { ReceiptQueriesPlugin } = require('./receiptPlugin');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 
@@ -7,23 +9,7 @@ const ReceiptSchema = new mongoose.Schema({
     receiptId: {
         type: Number
     },
-    bank: {
-        type: String,
-    },
-    ammount: {
-        type: Number,
-        required: true,
-    },
-    checkNumber: {
-        type: Number,
-        default: 0
-    },
-    panNo: {
-        type: String
-    },
-    aadharNo: {
-        type: Number
-    },
+    payments: [PaymentModel.schema],
     business: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
@@ -39,17 +25,14 @@ const ReceiptSchema = new mongoose.Schema({
         ref: 'parties',
         required: true
     },
-    order: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'orders'
+    invalidated: {
+        type: Boolean,
+        default: false
     },
-    type: {
+    paymentType: {
         type: String,
         enum: Object.values(PaymentTypeEnum),
         required: true
-    },
-    invalidated: {
-        type: Boolean
     },
     date: {
         type: Date,
@@ -59,5 +42,6 @@ const ReceiptSchema = new mongoose.Schema({
 });
 
 ReceiptSchema.plugin(AutoIncrement, { id: 'receipt_seq', inc_field: 'receiptId' });
+ReceiptSchema.plugin(ReceiptQueriesPlugin);
 
 module.exports = ReceiptModel = mongoose.model('receipt', ReceiptSchema);

@@ -7,10 +7,9 @@ const OrderModel = require('../../model/order/OrderModel');
 const mongoose = require('mongoose');
 const { updateOrder } = require('../../util/ammountCalculator');
 const moment = require('moment');
-const { generateReceipt } = require('../../util/receiptGenerator');
-const ReceiptModel = require('../../model/paymentReceipt/ReceiptModel');
-const { ItemStatus } = require('../../util/enum');
+const ReceiptModel = require('../../model/receipt/ReceiptModel');
 const ItemModel = require('../../model/item/ItemModel');
+const { createOrder } = require('../../service/order');
 
 const orderAggregate = [
     {
@@ -105,55 +104,8 @@ router.post('/',
     async (req, res) => {
         console.log("Serving post request:", req.baseUrl);
         try {
-
-            let party = await PartyModel.findById({ _id: req.body.party });
-            updateOrder(req.body);
-            let order = new OrderModel(req.body);
-
-            order.partyPreBalance = party.balance.toFixed(2);
-            order.party = party._id;
-            order.partyPostBalance = (order.partyPreBalance - order.billOutstanding + (order.payment ? order.payment.ammount : 0)).toFixed(2);
-            party.order.push(order._id);
-
-            party.balance = (party.balance - order.billOutstanding + (order.payment ? order.payment.ammount : 0)).toFixed(2);
-
-            order.user = req.user.id;
-            order.business = req.user.business;
-
-            if (
-                order.payment
-                && order.payment.ammount
-                && order.payment.ammount !== 0
-                && order.payment.type
-            ) {
-                let receipt = new ReceiptModel(generateReceipt(req.user, order, party));
-                order.receipt = receipt._id;
-                await receipt.save();
-                order.receipt = receipt._id;
-            }
-
-            for (let item of order.items) {
-                let stockItem = null;
-                if (item.stockItemId) {
-                    stockItem = await ItemModel.findById(item.stockItemId);
-                    if (stockItem.stockPieces === 0) {
-                        return res.status(304).json({});
-                    }
-                    stockItem.stockPieces > item.pieces
-                        ? stockItem.stockPieces = stockItem.stockPieces - item.pieces
-                        : stockItem.stockPieces = 0;
-                }
-                else {
-                    stockItem = new ItemModel(item);
-                    item.stockItemId = stockItem._id;
-                }
-                await ItemModel.findOneAndUpdate({ _id: stockItem._id }, stockItem, { upsert: true });
-            }
-
-            await order.save();
-            await party.save();
-
-            res.json({ orderId: order._id });
+            let orderId = await createOrder(req.user, req.body);
+            res.json({ orderId });
 
         } catch (error) {
             console.log(error);

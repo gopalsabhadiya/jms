@@ -23,13 +23,14 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            let order = await OrderModel.findById(req.body.orderId);
+            let order = JSON.parse(JSON.stringify(await OrderModel.findById(req.body.orderId)));
             let party = await PartyModel.findById(order.party);
             let business = await BusinessModel.findOne({ _id: req.user.business });
-            let itemDetailsRows = generateItemDetailsRows(order.items);
             roundOff(order);
-            console.log(order)
 
+            let itemDetailsRows = generateItemDetailsRows(order.items);
+            formatDate(order);
+            console.log(order)
 
             if (!order) {
                 console.error(`Order: ${req.body.orderId} doesn't exists`);
@@ -44,6 +45,11 @@ router.post('/',
         }
     }
 );
+
+formatDate = (order) => {
+    console.log(order.date);
+    order.date = new Date(order.date);
+}
 
 const generateItemDetailsRows = (items) => {
     let tableData = "";
@@ -70,7 +76,7 @@ const prepareExtraDetails = (item) => {
             break;
     }
     let extraDetails = {
-        name: `${item.name} ${item.huid ? - item.huid : ''}`,
+        name: `${item.name} ${item.huid ? ' - ' + item.huid : ''}`,
         pieces: `${item.pieces}`,
         rate: `${item.rate}`,
         labour: `${labour}`,
