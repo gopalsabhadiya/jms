@@ -337,26 +337,6 @@
                                                         party.gstin : "-"}</span>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="font13">
-                                                    <b>Amt. Bal: </b>
-                                                </td class="font13">
-                                                <td class="font13">
-                                                    <span>${order.partyPreBalance
-                                                        >
-                                                        0 ?
-                                                        order.partyPreBalance :
-                                                        order.partyPreBalance *
-                                                        -1}
-                                                    </span>
-                                                    <span>
-                                                        ${order.partyPreBalance
-                                                        > 0
-                                                        ? "CR" :
-                                                        "DR"}
-                                                    </span>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </td>
@@ -502,17 +482,8 @@
                                 padding-bottom:2px;">${order.billOutstanding}</td>
                         </tr>
                         <tr style="border-bottom: 1px solid black;">
-                            <td class="font13" colspan="5">- All Disputes are
-                                subject to Surat Jurisdiction. - E.&.O.E.</td>
-                            <td class="font13" colspan="3">Os Bal:
-                                <span>
-                                    ${order.partyPostBalance>0 ?
-                                    order.partyPostBalance :
-                                    order.partyPostBalance*-1}
-                                </span>
-                                <span>
-                                    ${order.partyPostBalance>0 ? "CR" : "DR"}
-                                </span>
+                            <td class="font13" colspan="8">- All Disputes are
+                                subject to Surat Jurisdiction. - E.&.O.E.
                             </td>
                             <td class="font13" colspan="2"
                                 style="padding-top:2px; padding-bottom:2px;"><b>Kasar:</b>

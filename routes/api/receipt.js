@@ -5,43 +5,7 @@ const mongoose = require('mongoose');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
 const ReceiptModel = require('../../model/receipt/ReceiptModel');
-
-const searchReceipts = [
-    {
-        '$match': {
-            'business': '',
-            invalidated: { $ne: true }
-        }
-    }, {
-        '$lookup': {
-            'from': 'parties',
-            'localField': 'party',
-            'foreignField': '_id',
-            'as': 'party'
-        }
-    }, {
-        '$project': {
-            'type': 1,
-            'ammount': 1,
-            'party': {
-                'partyId': 1,
-                'name': 1,
-                'contactNo': 1,
-                '_id': 1
-            },
-            'date': {
-                '$dateToString': {
-                    'format': '%d-%m-%Y',
-                    'date': '$date'
-                }
-            }
-        }
-    }, {
-        '$unwind': {
-            'path': '$party'
-        }
-    }
-];
+const { getReceiptDetails } = require('../../service/receipt');
 
 /**
  *  @route     POST api/users
@@ -156,9 +120,7 @@ router.get('/',
     async (req, res) => {
         console.log("Serving new request search:", req.baseUrl);
         try {
-
-            searchReceipts[0]['$match']['business'] = mongoose.Types.ObjectId(req.user.business);
-            let receipts = await ReceiptModel.aggregate(searchReceipts);
+            let receipts = await getReceiptDetails(req.user.business);
 
             res.json(receipts);
 

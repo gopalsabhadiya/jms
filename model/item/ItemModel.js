@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ExtraChargablesModel = require('../order/ExtraChargablesModel');
 const LabourModel = require('../order/LabourModel');
-const { ItemQueriesPlugin } = require('./ItemPlugin');
+const { ItemQueriesPlugin } = require('./plugin/ItemPlugin');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const ItemSchema = new mongoose.Schema({

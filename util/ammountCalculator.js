@@ -1,7 +1,7 @@
 const { LabourTypeEnum, ExtraChargablesTypeEnum } = require("./enum");
 const { roundTo } = require("./numberUtils");
 
-const updateOrder = (order) => {
+const calculateOrder = (order) => {
     try {
         let taxAmmount = 0;
         let netAmmount = 0;
@@ -170,4 +170,4 @@ const roundOff = (order) => {
     }
 };
 
-module.exports = { updateOrder, updateItem, roundOff };
+module.exports = { calculateOrder, updateItem, roundOff };

@@ -3,6 +3,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const GstModel = require('./GstModel');
 const ScrapModel = require('./ScrapModel');
 const OrderItemModel = require('./OrderItemModel');
+const { OrderQueriesPlugin } = require('./plugin/OrderPlugin');
 
 const OrderSchema = new mongoose.Schema({
     orderId: {
@@ -73,12 +74,7 @@ const OrderSchema = new mongoose.Schema({
     }
 });
 
-OrderSchema.statics = {
-    updateReceipt: function (orderId, receiptId, callback) {
-        return this.findByIdAndUpdate(orderId, { $push: { receipts: receiptId } }, callback);
-    }
-}
-
-OrderSchema.plugin(AutoIncrement, { id: 'order_seq', inc_field: 'orderId' })
+OrderSchema.plugin(AutoIncrement, { id: 'order_seq', inc_field: 'orderId' });
+OrderSchema.plugin(OrderQueriesPlugin);
 
 module.exports = OrderModel = mongoose.model('order', OrderSchema);

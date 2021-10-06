@@ -1,14 +1,14 @@
 const OrderModel = require("../model/order/OrderModel");
-const PartyModel = require("../model/party/PartyModel");
-const ReceiptModel = require("../model/receipt/ReceiptModel");
-const { updateOrder, roundOff } = require("../util/ammountCalculator");
-const { updateInventoryForPlacedOrder } = require("./inventory");
-const { updatePartyForPlacedOrder } = require("./party");
-const { createReceiptForSinglePayment } = require("./receipt");
+const { calculateOrder, roundOff } = require("../util/ammountCalculator");
+const { updateInventoryForPlacedOrder, updateInventoryForDeletedOrder } = require("./inventory");
+const { updatePartyForPlacedOrder, updatePartyForDeletedOrder, updatePartyForUpdatedOrder } = require("./party");
+const { createReceiptForSinglePayment, updateReceiptForDeletdOrder } = require("./receipt");
 
-createOrder = async (user, order) => {
+const createOrder = async (user, order) => {
 
-    updateOrder(order);
+    console.log('Creating new order.............');
+
+    calculateOrder(order);
 
     order.user = user.id;
     order.business = user.business;
@@ -16,9 +16,14 @@ createOrder = async (user, order) => {
     let orderModel = new OrderModel(order);
 
     createReceiptForSinglePayment(user, order.payment, orderModel);
-    updateInventoryForPlacedOrder(orderModel);
+    updateInventoryForPlacedOrder(orderModel.items);
     updatePartyForPlacedOrder(orderModel);
 
+    console.log(orderModel.billOutstanding);
+    console.log(orderModel.billOutstanding < 1);
+    if (orderModel.billOutstanding < 1) {
+        orderModel.fulfilled = true;
+    }
     roundOff(orderModel);
 
     await orderModel.save();
@@ -26,25 +31,59 @@ createOrder = async (user, order) => {
     return orderModel._id;
 };
 
-deleteOrder = async (user, orderId) => {
+const deleteOrder = async (user, orderId) => {
+    console.log('Deleting order.............');
 
     let order = await OrderModel.findById(orderId);
-    let receipts = await ReceiptModel.getAllById(order.receipts);
-    let party = await PartyModel.findById(order.party);
-    let payableAmmount = 0;
 
-    for (let receipt of receipts) {
-        for (let payment of receipt) {
-            if (payment.orderId === order._id) {
-                payment.invalidated = true;
-            }
-        }
-    }
-
-
+    updateReceiptForDeletdOrder(order);
+    updatePartyForDeletedOrder(order);
+    updateInventoryForDeletedOrder(order.items);
 
     order.invalidated = true;
     order.deletedBy = user.id;
+
+    await order.save();
 };
 
-module.exports = { createOrder };
+const getOrder = async (orderId) => {
+    console.log('Serving order.............');
+
+    let order = await OrderModel.findById(orderId);
+    return order;
+};
+
+const getOrderDetails = async (businessId) => {
+    console.log('Serving order details.............');
+
+    let orderDetails = await OrderModel.getDetails(businessId);
+    return orderDetails;
+}
+
+const updateOrder = async (user, order) => {
+    console.log('Updating order.............');
+
+    let oldOrder = await OrderModel.findById(order._id);
+
+    calculateOrder(order);
+    roundOff(order);
+
+    order.billOutstanding = order.billOutstanding - (oldOrder.totalAmmount - oldOrder.billOutstanding);
+
+    delete order.date;
+
+    order.party = oldOrder.party;
+    updatePartyForUpdatedOrder(oldOrder, order);
+
+    let updatedOrder = await OrderModel.findOneAndUpdate({ _id: order._id }, order, { new: true });
+    return updatedOrder;
+
+};
+
+const getUnpaidOrders = async (user, partyId) => {
+    const unpaidOrders = await OrderModel.getUnpaidOrders(user.business, partyId);
+    console.log("UnpaidOrders:", unpaidOrders);
+    return unpaidOrders;
+}
+
+module.exports = { createOrder, deleteOrder, getOrder, getOrderDetails, updateOrder, getUnpaidOrders };

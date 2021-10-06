@@ -31,8 +31,19 @@ function search(q, business, callback) {
     return searchByItemId(q, business, this, callback);
 };
 
+function getAllItemsById(items, callback) {
+    console.log(items);
+    items.map(item => mongoose.Types.ObjectId(item._id));
+    return this.find({
+        _id: {
+            $in: items
+        }
+    });
+};
+
 function ItemQueriesPlugin(schema, options) {
     schema.statics.search = search;
+    schema.statics.getAllById = getAllItemsById;
 }
 
 module.exports = {

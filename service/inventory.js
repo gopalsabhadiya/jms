@@ -1,11 +1,11 @@
 const ItemModel = require("../model/item/ItemModel");
 const { ItemAlreadySoldException } = require("../util/exceptions/itemSoldException");
 
-updateInventoryForPlacedOrder = async (order) => {
+updateInventoryForPlacedOrder = async (items) => {
     console.log("Updating Inventory................")
     let itemsToBeUpdated = [];
 
-    for (let item of order.items) {
+    for (let item of items) {
         let stockItem = null;
         if (item.stockItemId) {
             stockItem = await ItemModel.findById(item.stockItemId);
@@ -28,4 +28,14 @@ updateInventoryForPlacedOrder = async (order) => {
 
 }
 
-module.exports = { updateInventoryForPlacedOrder };
+updateInventoryForDeletedOrder = async (items) => {
+
+    let itemsFromDb = await ItemModel.getAllById(items);
+
+    for (let [index, item] of itemsFromDb.entries()) {
+        item.stockPieces = item.stockPieces + parseInt(items[index].pieces);
+        await item.save();
+    }
+}
+
+module.exports = { updateInventoryForPlacedOrder, updateInventoryForDeletedOrder };
