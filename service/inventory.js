@@ -1,7 +1,7 @@
 const ItemModel = require("../model/item/ItemModel");
 const { ItemAlreadySoldException } = require("../util/exceptions/itemSoldException");
 
-updateInventoryForPlacedOrder = async (items) => {
+const updateInventoryForPlacedOrder = async (items) => {
     console.log("Updating Inventory................")
     let itemsToBeUpdated = [];
 
@@ -28,7 +28,7 @@ updateInventoryForPlacedOrder = async (items) => {
 
 }
 
-updateInventoryForDeletedOrder = async (items) => {
+const updateInventoryForDeletedOrder = async (items) => {
 
     let itemsFromDb = await ItemModel.getAllById(items);
 

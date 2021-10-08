@@ -81,9 +81,43 @@ const updateOrder = async (user, order) => {
 };
 
 const getUnpaidOrders = async (user, partyId) => {
+    console.log("Serving unpaid orders...........");
     const unpaidOrders = await OrderModel.getUnpaidOrders(user.business, partyId);
-    console.log("UnpaidOrders:", unpaidOrders);
     return unpaidOrders;
 }
 
-module.exports = { createOrder, deleteOrder, getOrder, getOrderDetails, updateOrder, getUnpaidOrders };
+const updateOrderForPayment = async (receipt) => {
+    console.log("Updating orders for payment............");
+
+    let orderIds = receipt.payments.map(payment => payment.orderId);
+
+    let orders = await OrderModel.getAllById(orderIds);
+
+    for (let order of orders) {
+        let oldOrder = { ...order._doc };
+        let payment = receipt.payments.filter(payment => payment.orderId.equals(order._id.toString()));
+        if (payment[0].ammount === order.billOutstanding) {
+            order.fulfilled = true;
+            order.billOutstanding = 0;
+        }
+        else {
+            order.billOutstanding -= payment[0].ammount;
+        }
+        order.receipts.push(receipt._id);
+        await order.save();
+        updatePartyForUpdatedOrder(oldOrder, order);
+    }
+    return orders;
+
+}
+
+module.exports =
+{
+    createOrder,
+    deleteOrder,
+    getOrder,
+    getOrderDetails,
+    updateOrder,
+    getUnpaidOrders,
+    updateOrderForPayment
+};

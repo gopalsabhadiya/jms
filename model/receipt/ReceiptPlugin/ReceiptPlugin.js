@@ -52,6 +52,7 @@ function getReceiptDetails(businessId, callback) {
 
 function getAllReceiptsById(receiptIds, callback) {
     receiptIds.map(id => mongoose.Types.ObjectId(id));
+    console.log("receiptIds:", receiptIds);
     return this.find({
         _id: {
             $in: receiptIds

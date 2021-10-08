@@ -5,52 +5,28 @@ const mongoose = require('mongoose');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
 const ReceiptModel = require('../../model/receipt/ReceiptModel');
-const { getReceiptDetails } = require('../../service/receipt');
+const { getReceiptDetails, createNewReceipt } = require('../../service/receipt');
 
 /**
  *  @route     POST api/users
  *  @desc      Register User
  *  @access    Public
  */
-router.post('/',
+
+router.post(
+    '/',
     authMiddleware,
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            if (req.body._id) {
-                let receipt = req.body;
-                delete receipt['date'];
-                let party = receipt.party;
-                receipt.party = receipt.party._id;
-                receipt = await ReceiptModel.findOneAndUpdate({ _id: receipt._id }, receipt);
-                receipt = receipt.toJSON();
-                receipt.party = party;
-                return res.json(receipt);
-            }
-
-            let receipt = new ReceiptModel(req.body);
-            if (!receipt.party) {
-                return res.status(400);
-            }
-            receipt.user = req.user.id;
-            receipt.business = req.user.business;
-            receipt.party = req.body.party;
-
-            let party = await PartyModel.findById(receipt.party);
-            party.balance = party.balance + receipt.ammount;
-            await PartyModel.findOneAndUpdate({ _id: party._id }, party);
-            receipt = await receipt.save();
-            receipt = receipt.toJSON();
-            receipt.party = party.toJSON();
+            let receipt = await createNewReceipt(req.user, req.body);
+            console.log("returning response", receipt);
             return res.json(receipt);
-
-
         } catch (error) {
-            console.log(error);
-            res.status(500).send('Internal Server Error');
+            console.log("error:", error)
         }
     }
-);
+)
 
 router.get(
     '/:receipt_id',

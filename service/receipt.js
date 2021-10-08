@@ -1,6 +1,11 @@
+module.exports = {};
+
 const PaymentModel = require("../model/receipt/PaymentModel");
 const ReceiptModel = require("../model/receipt/ReceiptModel");
 const { PaymentTypeEnum } = require("../util/enum");
+const { updatePartyForUpdatedOrder } = require("./party");
+const orderService = import("./order.js");
+
 
 const createPayment = async (user, receipt, orders) => {
     receipt.user = user.id;
@@ -16,14 +21,15 @@ const createReceiptForSinglePayment = async (user, payment, order) => {
         payment
         && payment.ammount
         && payment.ammount !== 0
-        && payment.type
+        && payment.paymentMode
     ) {
-        console.log(payment);
         let paymentModel = new PaymentModel(payment);
         let receipt = new ReceiptModel();
 
         paymentModel.orderId = order._id;
-        receipt.paymentMode = payment.type;
+        receipt.ammount = paymentModel.ammount;
+        receipt.activeAmmount = receipt.ammount;
+        receipt.paymentMode = payment.paymentMode;
         receipt.bank = payment.bank;
         receipt.check = payment.check;
         receipt.pan = payment.pan;
@@ -37,24 +43,35 @@ const createReceiptForSinglePayment = async (user, payment, order) => {
         order.receipts = [receipt._id];
         order.billOutstanding -= paymentModel.ammount;
 
-        await receipt.save();
+        receipt = await receipt.save();
     }
 };
 
 const updateReceiptForDeletdOrder = async (order) => {
+    console.log("Updating receipt for deleted order.......");
+
     let receipts = await ReceiptModel.getAllById(order.receipts);
+    console.log("Your Order:", order);
+    console.log("Your receipts:", receipts);
 
     for (let receipt of receipts) {
         let receiptInvalidated = true;
+        console.log("Updating receipt:", receipt.ammount)
         for (let payment of receipt.payments) {
-            if (payment.orderId.toString() === order._id.toString()) {
+            if (payment.orderId.equals(order._id.toString())) {
+                console.log("Into if")
                 payment.invalidated = true;
+                receipt.activeAmmount -= payment.ammount;
             }
-            else {
+            else if (!payment.invalidated) {
+                console.log("Into else if")
                 receiptInvalidated = false;
             }
+            console.log("Payment Invalidated:", payment.invalidated);
+
         }
         receipt.invalidated = receiptInvalidated;
+        console.log("ReceiptInvalidated:", receiptInvalidated)
         await receipt.save();
     }
 };
@@ -66,4 +83,33 @@ const getReceiptDetails = async (businessId) => {
     return receiptDetails;
 }
 
-module.exports = { createPayment, createReceiptForSinglePayment, updateReceiptForDeletdOrder, getReceiptDetails };
+const createNewReceipt = async (user, receipt) => {
+    console.log('Serving create receipt..........');
+    let payments = receipt.payments.map(payment => {
+        delete payment.orderId;
+        const { _id: orderId, ...rest } = payment;
+        return { orderId, ...rest };
+    });
+    receipt.activeAmmount = receipt.ammount;
+    receipt.payments = payments;
+    receipt.business = user.business;
+    receipt.user = user.id;
+    receipt.paymentType = PaymentTypeEnum.RECEIVED;
+
+    let receiptModel = new ReceiptModel(receipt);
+
+    await (await orderService).updateOrderForPayment(receiptModel);
+
+    let savedReceipt = await receiptModel.save();
+    return savedReceipt;
+
+}
+
+module.exports =
+{
+    createPayment,
+    createReceiptForSinglePayment,
+    updateReceiptForDeletdOrder,
+    getReceiptDetails,
+    createNewReceipt
+};

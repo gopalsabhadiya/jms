@@ -23,9 +23,8 @@ updatePartyForPlacedOrder = async (order) => {
 };
 
 updatePartyForUpdatedOrder = async (oldOrder, newOrder) => {
-    console.log("Orders:", oldOrder, newOrder, oldOrder.billOutstanding - newOrder.billOutstanding)
+    console.log("Updating party for updated order...............", oldOrder.party)
     let party = await PartyModel.findById(oldOrder.party);
-    console.log("Old Party:", party)
     party.balance = party.balance + oldOrder.billOutstanding - newOrder.billOutstanding;
     console.log("Updated Party:", party)
 

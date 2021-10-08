@@ -71,6 +71,8 @@ const OrderSchema = new mongoose.Schema({
     },
     invalidated: {
         type: Boolean,
+        required: true,
+        default: false
     }
 });
 

@@ -49,13 +49,24 @@ function updateReceipt(orderId, receiptId, callback) {
 }
 
 function getUnpaidOrders(businessId, partId, callback) {
-    return this.find({ business: mongoose.Types.ObjectId(businessId), fulfilled: false }).select({ orderId: 1, finalAmmount: 1, billOutstanding: 1 })
+    return this.find({ business: mongoose.Types.ObjectId(businessId), fulfilled: false, invalidated: false }).select({ orderId: 1, finalAmmount: 1, billOutstanding: 1 })
+}
+
+function getAllOrdersById(orderIds, callback) {
+    orderIds.map(id => mongoose.Types.ObjectId(id));
+    console.log("OrderIds:", orderIds)
+    return this.find({
+        _id: {
+            $in: orderIds
+        }
+    });
 }
 
 function OrderQueriesPlugin(schema, options) {
     schema.statics.getDetails = getOrderDetails;
     schema.statics.updateReceipt = updateReceipt;
     schema.statics.getUnpaidOrders = getUnpaidOrders;
+    schema.statics.getAllById = getAllOrdersById;
 }
 
 module.exports = {

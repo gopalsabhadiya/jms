@@ -9,6 +9,10 @@ const ReceiptSchema = new mongoose.Schema({
     receiptId: {
         type: Number
     },
+    ammount: {
+        type: Number,
+        required: true
+    },
     payments: [PaymentModel.schema],
     business: {
         type: mongoose.Schema.Types.ObjectId,
@@ -50,6 +54,10 @@ const ReceiptSchema = new mongoose.Schema({
     },
     aadhar: {
         type: String
+    },
+    activeAmmount: {
+        type: Number,
+        required: true
     },
     date: {
         type: Date,
