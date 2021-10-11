@@ -5,6 +5,7 @@ const UserModel = require('../../model/user/UserModel');
 const config = require('config');
 const validationMiddleware = require('../../middleware/validation/validate');
 const bcrypt = require('bcryptjs');
+const BusinessModel = require('../../model/business/BusinessModel');
 
 
 /**
@@ -20,16 +21,17 @@ router.post(
 
         const { email, password } = req.body;
 
-        console.log('hello');
         try {
             let user = await UserModel.findOne({ email });
+            let business = await BusinessModel.findById(user.business)
 
             if (user) {
                 if (await bcrypt.compare(password, user.password)) {
                     const payload = {
                         user: {
                             id: user.id,
-                            business: user.business
+                            business: user.business,
+                            counters: business.counters
                         }
                     };
 

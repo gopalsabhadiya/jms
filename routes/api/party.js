@@ -4,6 +4,7 @@ const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
 const PartyModel = require('../../model/party/PartyModel');
 const mongoose = require('mongoose');
+const CounterModel = require('../../model/counter/CounterModel');
 
 
 /**
@@ -34,11 +35,16 @@ router.post('/',
             }
 
             party = new PartyModel(req.body);
+
+            let counter = await CounterModel.find({ business: req.user.business });
+            counter.party += 1;
+            party.partyId = counter.party;
             party.type = "Retail";
 
             party.user = req.user.id;
             party.business = req.user.business;
             party = await party.save();
+            await counter.save();
 
             res.json(party);
 

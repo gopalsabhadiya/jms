@@ -3,19 +3,11 @@ module.exports = {};
 const PaymentModel = require("../model/receipt/PaymentModel");
 const ReceiptModel = require("../model/receipt/ReceiptModel");
 const { PaymentTypeEnum } = require("../util/enum");
-const { updatePartyForUpdatedOrder } = require("./party");
 const orderService = import("./order.js");
 
-
-const createPayment = async (user, receipt, orders) => {
-    receipt.user = user.id;
-    receipt.business = user.business;
-    receipt.orders = orders.map(order => order._id);
-    let receiptModel = new ReceiptModel(receipt);
-    await ReceiptModel.save(receipt);
-};
-
 const createReceiptForSinglePayment = async (user, payment, order) => {
+
+    console.log("Creating receipt for singl order payment.................");
 
     if (
         payment
@@ -103,13 +95,30 @@ const createNewReceipt = async (user, receipt) => {
     let savedReceipt = await receiptModel.save();
     return savedReceipt;
 
-}
+};
+
+const getReceiptWithParty = async (receptId) => {
+    console.log('Serving receipt.............');
+
+    let receipt = await ReceiptModel.getByIdWithPartyAndOrders(receptId);
+    receipt = receipt[0];
+    console.log(receipt);
+
+    for (let payment of receipt.payments) {
+        for (let order of receipt.orders) {
+            if (payment.orderId.toString() == order._id.toString()) {
+                payment.order = order;
+            }
+        }
+    }
+    return receipt;
+};
 
 module.exports =
 {
-    createPayment,
     createReceiptForSinglePayment,
     updateReceiptForDeletdOrder,
     getReceiptDetails,
-    createNewReceipt
+    createNewReceipt,
+    getReceiptWithParty
 };

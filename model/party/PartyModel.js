@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const { PartyTypeEnum } = require('../../util/enum');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
-
 
 const PartySchema = new mongoose.Schema({
     partyId: {
@@ -58,8 +56,6 @@ const PartySchema = new mongoose.Schema({
         default: Date.now
     }
 });
-
-PartySchema.plugin(AutoIncrement, { id: 'party_seq', inc_field: 'partyId' });
 
 PartySchema.statics = {
     search: function (q, business, callback) {

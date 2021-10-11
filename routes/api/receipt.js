@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/auth');
-const mongoose = require('mongoose');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
 const ReceiptModel = require('../../model/receipt/ReceiptModel');
-const { getReceiptDetails, createNewReceipt } = require('../../service/receipt');
+const { getReceiptDetails, createNewReceipt, getReceiptWithParty } = require('../../service/receipt');
+const { prepareOrderDetailsForReceipt } = require('../../util/receipt');
 
 /**
  *  @route     POST api/users
@@ -28,24 +28,18 @@ router.post(
     }
 )
 
-router.get(
-    '/:receipt_id',
+router.post(
+    '/view',
     authMiddleware,
     async (req, res) => {
-        console.log("Serving request:", req.baseUrl);
+        console.log("Serving post request:", req.baseUrl);
         try {
-            console.log("Id:", req.params.receipt_id);
-            let receipt = await ReceiptModel.findById(req.params.receipt_id);
-
-            if (receipt) {
-                return res.status(200).json(receipt);
-            }
-
-            return res.status(404).json({ msg: 'Receipt not found' });
-
-        } catch (error) {
-            console.error(`Error while fetching Receipt`);
-            return res.status(500).send(error.message);
+            console.log(req.body);
+            let receipt = await getReceiptWithParty(req.body.receiptId);
+            return res.json(receipt);
+        }
+        catch (error) {
+            console.log("Error while serving view receipt:", error)
         }
     }
 );
@@ -56,10 +50,13 @@ router.post(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let receipt = await ReceiptModel.findById(req.body.receiptId);
-            let party = await PartyModel.findById(receipt.party);
-            let business = await BusinessModel.findById(req.user.business);
+            console.log(req.body);
+            let receipt = await getReceiptWithParty(req.body.receiptId);
+            let business = await BusinessModel.findById(receipt.business);
 
+            let orderDetails = prepareOrderDetailsForReceipt(receipt.payments);
+
+            console.log(eval("`" + RECEIPT_HTML + "`"));
             return res.json(eval("`" + RECEIPT_HTML + "`"));
 
         } catch (error) {
