@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ExtraChargablesModel = require('../order/ExtraChargablesModel');
 const LabourModel = require('../order/LabourModel');
 const { ItemQueriesPlugin } = require('./plugin/ItemPlugin');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const ItemSchema = new mongoose.Schema({
     itemId: {
@@ -59,7 +58,6 @@ const ItemSchema = new mongoose.Schema({
 
 });
 
-ItemSchema.plugin(AutoIncrement, { id: 'itemSeq_seq', inc_field: 'itemId' })
 ItemSchema.plugin(ItemQueriesPlugin);
 
 module.exports = ItemModel = mongoose.model('item', ItemSchema);

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 const GstModel = require('./GstModel');
 const ScrapModel = require('./ScrapModel');
 const OrderItemModel = require('./OrderItemModel');
@@ -76,7 +75,6 @@ const OrderSchema = new mongoose.Schema({
     }
 });
 
-OrderSchema.plugin(AutoIncrement, { id: 'order_seq', inc_field: 'orderId' });
 OrderSchema.plugin(OrderQueriesPlugin);
 
 module.exports = OrderModel = mongoose.model('order', OrderSchema);

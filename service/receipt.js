@@ -3,6 +3,7 @@ module.exports = {};
 const PaymentModel = require("../model/receipt/PaymentModel");
 const ReceiptModel = require("../model/receipt/ReceiptModel");
 const { PaymentTypeEnum } = require("../util/enum");
+const { getNextReceiptCount } = require("./counter");
 const orderService = import("./order.js");
 
 const createReceiptForSinglePayment = async (user, payment, order) => {
@@ -18,6 +19,7 @@ const createReceiptForSinglePayment = async (user, payment, order) => {
         let paymentModel = new PaymentModel(payment);
         let receipt = new ReceiptModel();
 
+        receipt.receiptId = await getNextReceiptCount(user.counter);
         paymentModel.orderId = order._id;
         receipt.ammount = paymentModel.ammount;
         receipt.activeAmmount = receipt.ammount;
@@ -43,8 +45,6 @@ const updateReceiptForDeletdOrder = async (order) => {
     console.log("Updating receipt for deleted order.......");
 
     let receipts = await ReceiptModel.getAllById(order.receipts);
-    console.log("Your Order:", order);
-    console.log("Your receipts:", receipts);
 
     for (let receipt of receipts) {
         let receiptInvalidated = true;
@@ -89,13 +89,26 @@ const createNewReceipt = async (user, receipt) => {
     receipt.paymentType = PaymentTypeEnum.RECEIVED;
 
     let receiptModel = new ReceiptModel(receipt);
+    receiptModel.receiptId = await getNextReceiptCount(user.counter);
 
     await (await orderService).updateOrderForPayment(receiptModel);
 
-    let savedReceipt = await receiptModel.save();
-    return savedReceipt;
+    await receiptModel.save();
+    return receiptModel;
 
 };
+
+const deleteReceipt = async (receiptId) => {
+    console.log("Deleting receipt...........");
+
+    let receipt = await ReceiptModel.findById(receiptId);
+    receipt.invalidated = true;
+
+    let {updateOrdersForDeletedReceipt} = require('./order');
+    await updateOrdersForDeletedReceipt(receipt);
+
+    await receipt.save();
+}
 
 const getReceiptWithParty = async (receptId) => {
     console.log('Serving receipt.............');
@@ -120,5 +133,6 @@ module.exports =
     updateReceiptForDeletdOrder,
     getReceiptDetails,
     createNewReceipt,
-    getReceiptWithParty
+    getReceiptWithParty,
+    deleteReceipt
 };

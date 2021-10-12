@@ -6,6 +6,7 @@ const config = require('config');
 const validationMiddleware = require('../../middleware/validation/validate');
 const bcrypt = require('bcryptjs');
 const BusinessModel = require('../../model/business/BusinessModel');
+const CounterModel = require('../../model/counter/CounterModel');
 
 
 /**
@@ -23,7 +24,8 @@ router.post(
 
         try {
             let user = await UserModel.findOne({ email });
-            let business = await BusinessModel.findById(user.business)
+            let business = await BusinessModel.findById(user.business);
+            let counter = await CounterModel.findOne({ business: business._id })
 
             if (user) {
                 if (await bcrypt.compare(password, user.password)) {
@@ -31,7 +33,7 @@ router.post(
                         user: {
                             id: user.id,
                             business: user.business,
-                            counters: business.counters
+                            counter: counter._id
                         }
                     };
 

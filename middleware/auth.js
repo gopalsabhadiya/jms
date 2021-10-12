@@ -15,6 +15,7 @@ const middleware = (req, res, next) => {
         req.user = decoded.user;
         next();
     } catch (error) {
+        console.log("Error while authenticating:", error)
         res.status(401).json({ msg: 'Invalid JWT token' });
     }
 };

@@ -1,5 +1,6 @@
 const OrderModel = require("../model/order/OrderModel");
 const { calculateOrder, roundOff } = require("../util/ammountCalculator");
+const { getNextOrderCount } = require("./counter");
 const { updateInventoryForPlacedOrder, updateInventoryForDeletedOrder } = require("./inventory");
 const { updatePartyForPlacedOrder, updatePartyForDeletedOrder, updatePartyForUpdatedOrder } = require("./party");
 const { createReceiptForSinglePayment, updateReceiptForDeletdOrder } = require("./receipt");
@@ -13,14 +14,14 @@ const createOrder = async (user, order) => {
     order.user = user.id;
     order.business = user.business;
 
+    await updateInventoryForPlacedOrder(user, order.items);
+
     let orderModel = new OrderModel(order);
+    orderModel.orderId = await getNextOrderCount(user.counter);
 
-    createReceiptForSinglePayment(user, order.payment, orderModel);
-    updateInventoryForPlacedOrder(orderModel.items);
-    updatePartyForPlacedOrder(orderModel);
+    await createReceiptForSinglePayment(user, order.payment, orderModel);
+    await updatePartyForPlacedOrder(orderModel);
 
-    console.log(orderModel.billOutstanding);
-    console.log(orderModel.billOutstanding < 1);
     if (orderModel.billOutstanding < 1) {
         orderModel.fulfilled = true;
     }
@@ -109,7 +110,26 @@ const updateOrderForPayment = async (receipt) => {
     }
     return orders;
 
-}
+};
+
+const updateOrdersForDeletedReceipt = async (receipt) => {
+    console.log("Updating order for deleted receipt............");
+    let orders = await OrderModel.getAllById(receipt.payments.map(payment => payment.orderId));
+
+    for (let payment of receipt.payments) {
+        for (let order of orders) {
+            if (payment.orderId.toString() == order._id.toString() && !order.invalidated) {
+                let oldOrder = { ...order._doc };
+                order.billOutstanding += payment.ammount;
+                order.receipts = order.receipts.filter(orderReceipt => orderReceipt.toString() != receipt._id.toString());
+                order.fulfilled = false;
+                await order.save();
+                console.log(oldOrder.billOutstanding, order.billOutstanding);
+                updatePartyForUpdatedOrder(oldOrder, order);
+            }
+        }
+    }
+};
 
 module.exports =
 {
@@ -119,5 +139,6 @@ module.exports =
     getOrderDetails,
     updateOrder,
     getUnpaidOrders,
-    updateOrderForPayment
+    updateOrderForPayment,
+    updateOrdersForDeletedReceipt
 };

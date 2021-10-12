@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const { PaymentTypeEnum } = require('../../util/enum');
 const PaymentModel = require('./PaymentModel');
 const { ReceiptQueriesPlugin } = require('./ReceiptPlugin/ReceiptPlugin');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { PaymentModeEnum } = require('../../util/enum');
 
 const ReceiptSchema = new mongoose.Schema({
@@ -66,7 +65,6 @@ const ReceiptSchema = new mongoose.Schema({
     },
 });
 
-ReceiptSchema.plugin(AutoIncrement, { id: 'receipt_seq', inc_field: 'receiptId' });
 ReceiptSchema.plugin(ReceiptQueriesPlugin);
 
 module.exports = ReceiptModel = mongoose.model('receipt', ReceiptSchema);
