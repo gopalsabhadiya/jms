@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-const PartyModel = require('../../model/party/PartyModel');
-const mongoose = require('mongoose');
+const { createParty, updateParty, getPartyByBusiness, searchParty, deleteParty, getPartyById } = require('../../service/party');
 
 
 /**
@@ -17,34 +16,28 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            if (req.body.gstin) {
-                let party = await PartyModel.findOne({ email: req.body.gstin });
-
-                if (party) {
-                    return res.status(400).json({ errors: [{ msg: 'Party Already exists' }] });
-                }
-
-            }
-
-            if (req.body._id) {
-                party = await PartyModel.findOneAndUpdate({ _id: req.body._id }, req.body);
-                console.log(req.body);
-
-                return res.json(req.body);
-            }
-
-            party = new PartyModel(req.body);
-            party.type = "Retail";
-
-            party.user = req.user.id;
-            party.business = req.user.business;
-            party = await party.save();
-
-            res.json(party);
+            let party = await createParty(req.user, req.body);
+            return res.json(party);
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+router.put('/',
+    [authMiddleware, validationMiddleware],
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+
+            let party = await updateParty(req.body);
+            return res.json(party);
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send('Internal Server Error');
         }
     }
 );
@@ -55,18 +48,12 @@ router.get('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-
-            let party = await PartyModel.find({ business: req.user.business });
-
-            if (!party) {
-                console.error(`No Parties for User: ${user.email}`);
-                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
-            }
-            res.json(party);
+            let party = await getPartyByBusiness(req.user.business);
+            return res.json(party);
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
         }
     }
 );
@@ -77,20 +64,12 @@ router.get('/:party_id',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            console.log("Serving party with partyid")
-
-
-            let party = await PartyModel.findById({ _id: req.params.party_id });
-
-            if (!party) {
-                console.error(`No Parties for User: ${user.email}`);
-                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
-            }
-            res.json(party);
+            let party = await getPartyById(req.params.party_id);
+            return res.json(party);
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
         }
     }
 );
@@ -101,17 +80,12 @@ router.delete('/:party_id',
         console.log("Serving request:", req.baseUrl);
         try {
 
-            let party = await PartyModel.findOneAndRemove({ _id: req.params.party_id });
-
-            if (!party) {
-                console.error(`No Parties for User: ${user.email}`);
-                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
-            }
-            res.json({ msg: "Deleted successfully" });
+            let party = await deleteParty(req.params.party_id);
+            return res.json({ msg: "Deleted successfully" });
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
         }
     }
 );
@@ -121,26 +95,13 @@ router.post('/search',
     async (req, res) => {
         console.log("Serving new request search:", req.baseUrl);
         try {
-            console.log(req.body)
 
-            let party = await PartyModel.search(req.body.term, req.user.business, (err, data) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    return data;
-                }
-            });
-
-            if (!party) {
-                console.error(`No Parties for User: ${user.email}`);
-                return res.status(400).json({ errors: [{ msg: 'Party not available' }] });
-            }
-            res.json(party);
+            let party = await searchParty(req.user, req.body.term)
+            return res.json(party);
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
         }
     }
 );

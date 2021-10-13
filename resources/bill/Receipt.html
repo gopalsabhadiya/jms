@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>${party.name + "-" + receipt._id}</title>
+        <title>${receipt.party.name + "-" + receipt._id}</title>
         <style>
         body {
             margin: 0;
@@ -259,14 +259,7 @@
                                                 </td>
                                                 <td class="font13">
                                                     <span>
-                                                        ${
-                                                        receipt.date.getDate()
-                                                        }-${
-                                                        receipt.date.toLocaleString("default",{
-                                                        month: "long" })
-                                                        }-${
-                                                        receipt.date.getFullYear()
-                                                        }
+                                                        ${receipt.date}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -300,7 +293,7 @@
                                                 <td class="font13"
                                                     style="border-top-width:
                                                     0px;">
-                                                    <span>${party.name}</span>
+                                                    <span>${receipt.party.name}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -308,7 +301,7 @@
                                                     <b>Contact No:</b>
                                                 </td>
                                                 <td class="font13">
-                                                    <span>${party.contactNo}</span>
+                                                    <span>${receipt.party.contactNo}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -328,8 +321,8 @@
                                                 <td class="font13"
                                                     style="border-top-width:
                                                     0px;">
-                                                    <span>${party.gstin ?
-                                                        party.gstin : "-"}</span>
+                                                    <span>${receipt.party.gstin ?
+                                                        receipt.party.gstin : "-"}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -339,7 +332,7 @@
                             <tr>
                                 <td class="font13" colspan="4">
                                     <b>Address:</b>
-                                    <span>${party.address ? party.address : "-"}</span>
+                                    <span>${receipt.party.address ? receipt.party.address : "-"}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -351,7 +344,7 @@
                         <thead>
                             <tr>
                                 <th colspan="4" style="font-size: 15px;">Payment
-                                    Details (${receipt.type})</th>
+                                    Details (${receipt.paymentMode})</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -361,8 +354,7 @@
                                     <b>Ammount:</b>
                                 </td>
                                 <td class="font13">
-                                    <span>${receipt.ammount ? receipt.ammount :
-                                        "-"}</span>
+                                    <span>${receipt.activeAmmount}</span>
 
                                 </td>
                                 <td class="font13">
@@ -389,6 +381,23 @@
                                         ? receipt.aadharNo : "-"}</span>
                                 </td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="5" style="font-size: 15px;">This receipt includes</th>
+                            </tr>
+                            <tr>
+                                <th style="font-size: 15px;">Order Id</th>
+                                <th style="font-size: 15px;">Bill Ammount</th>
+                                <th style="font-size: 15px;">Date</th>
+                                <th style="font-size: 15px;">Payment</th>
+                                <th style="font-size: 15px;">Order Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orderDetails}
                         </tbody>
                     </table>
                     <table class="table">

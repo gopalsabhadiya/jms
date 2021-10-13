@@ -4,6 +4,7 @@ const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
 const BusinessModel = require('../../model/business/BusinessModel');
 const mongoose = require('mongoose');
+const CounterModel = require('../../model/counter/CounterModel');
 
 /**
  *  @route     POST api/business
@@ -16,18 +17,20 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
             let business = await BusinessModel.findOne({ email: req.body.email });
+            let counter = new CounterModel();
 
             if (business) {
                 console.error(`Business: ${business.email} already exists`);
                 return res.status(400).json({ errors: [{ msg: 'Business Already exists' }] });
             }
 
-
             business = new BusinessModel(req.body);
             business.users ? business.users.push(req.user.id) : business.users = [].push(req.user.business);
 
-
             await business.save();
+
+            counter.business = business._id;
+            await counter.save();
 
             let user = await UserModel.findOne({ _id: req.user.id });
             user.business = business._id;
