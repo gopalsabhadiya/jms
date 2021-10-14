@@ -106,7 +106,7 @@ const updateOrderForPayment = async (receipt) => {
         }
         order.receipts.push(receipt._id);
         await order.save();
-        updatePartyForUpdatedOrder(oldOrder, order);
+        await updatePartyForUpdatedOrder(oldOrder, order);
     }
     return orders;
 

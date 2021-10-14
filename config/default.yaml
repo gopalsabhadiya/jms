@@ -1,6 +1,6 @@
 mongo:
   uri: mongodb+srv://gopalsabhadiya:Go12%40%23palH@belaedible-cluster.vdgw8.mongodb.net/jms?retryWrites=true&w=majority
-  options: 
+  options:
     useNewUrlParser: true
     useUnifiedTopology: true
     useCreateIndex: true
@@ -11,3 +11,7 @@ jwtSecret: gopal.sabhadiya
 github:
   clientId: 175a57f254543092fec8
   clientSecret: e8917480e3a8e68461131b4daff9af1fca47d930
+
+nodemailer:
+  email: info.zaveribook@gmail.com
+  password: Go12@#palH

@@ -21,7 +21,8 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.13.7",
-    "mongoose-sequence": "^5.3.1"
+    "mongoose-sequence": "^5.3.1",
+    "nodemailer": "^6.7.0"
   },
   "devDependencies": {
     "concurrently": "^6.2.1",
