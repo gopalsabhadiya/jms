@@ -4,8 +4,8 @@
   "description": "Jewellery management system backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "NODE_ENV=production node server",
+    "server": "NODE_ENV=development nodemon server"
   },
   "author": "Gopal Sabhadiya",
   "license": "MIT",
@@ -14,6 +14,7 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "html-pdf": "^3.0.1",

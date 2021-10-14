@@ -72,9 +72,7 @@ const updatePartyForPlacedOrder = async (order) => {
 const updatePartyForUpdatedOrder = async (oldOrder, newOrder) => {
     console.log("Updating party for updated order...............", oldOrder.party)
     let party = await PartyModel.findById(oldOrder.party);
-    console.log(party);
     party.balance = party.balance + oldOrder.billOutstanding - newOrder.billOutstanding;
-    console.log(party);
     await party.save();
 };
 
@@ -87,14 +85,11 @@ const updatePartyForDeletedOrder = async (order) => {
 const updatePartyForReceipt = async (receipt) => {
     console.log("Updating party for excess ammount.........");
     let party = await PartyModel.findById(receipt.party);
-    console.log(party);
     const excessAmmount = receipt.payments.reduce(
         (excessAmmount, payment) => excessAmmount -= payment.ammount,
         receipt.ammount
     );
-    console.log(excessAmmount);
     party.balance += excessAmmount;
-    console.log(party)
     await party.save();
 }
 

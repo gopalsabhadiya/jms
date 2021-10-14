@@ -25,32 +25,54 @@ router.post(
         try {
             let user = await UserModel.findOne({ email });
             let business = await BusinessModel.findById(user.business);
-            let counter = await CounterModel.findOne({ business: business._id })
 
-            if (user) {
-                if (await bcrypt.compare(password, user.password)) {
-                    const payload = {
-                        user: {
-                            id: user.id,
-                            business: user.business,
-                            counter: counter._id
-                        }
-                    };
+            console.log(business)
 
-                    jwt.sign(
-                        payload,
-                        config.get('jwtSecret'),
-                        { expiresIn: 36000 },
-                        (error, token) => {
-                            if (error) throw error;
-                            res.json({ token });
-                        }
-                    );
-                    return res;
+            if (business) {
+                let counter = await CounterModel.findOne({ business: business._id })
+
+                if (user) {
+                    if (await bcrypt.compare(password, user.password)) {
+                        const payload = {
+                            user: {
+                                id: user.id,
+                                business: user.business,
+                                counter: counter._id
+                            }
+                        };
+
+                        jwt.sign(
+                            payload,
+                            config.get('jwtSecret'),
+                            { expiresIn: 36000 },
+                            (error, token) => {
+                                if (error) throw error;
+                                res.json({ token });
+                            }
+                        );
+                        return res;
+                    }
                 }
+
+                return res.status(400).json({ msg: 'Invalid Credentials' });
+            }
+            else {
+                if (user) {
+                    if (await bcrypt.compare(password, user.password)) {
+                        const payload = {
+                            user: {
+                                id: user.id,
+                            }
+                        };
+
+                        let token = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 36000 });
+                        return res.json({ token, businessRegistered: false });
+                    }
+                }
+
+                return res.status(400).json({ msg: 'Invalid Credentials' });
             }
 
-            return res.status(400).json({ msg: 'Invalid Credentials' });
 
         } catch (error) {
             console.log(`Error while authenticating User: ${email} \n ${error}`);

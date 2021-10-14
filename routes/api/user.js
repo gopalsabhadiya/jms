@@ -5,8 +5,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const authMiddleware = require('../../middleware/auth');
+const nodemailer = require('nodemailer');
 
 const UserModel = require('../../model/user/UserModel');
+const { getActivationLink } = require('../../util/environmentManager');
 
 
 /**
@@ -20,39 +22,54 @@ router.post('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
-
             let user = await UserModel.findOne({ email: req.body.email });
 
             if (user) {
                 console.error(`User: ${user.email} already exists`);
-                return res.status(400).json({ errors: [{ msg: 'User Already exists' }] });
+                return res.status(400).json({ msg: 'User Already exists' });
             }
 
             user = new UserModel(req.body);
-            user.business = req.user.business;
 
             const salt = await bcrypt.genSalt(10);
 
             user.password = await bcrypt.hash(req.body.password, salt);
-            await user.save();
 
             const payload = {
-                user: {
-                    id: user.id,
-                    business: user.business,
-                }
-            };
+                email: user.email
+            }
 
-            jwt.sign(
-                payload,
-                config.get('jwtSecret'),
-                { expiresIn: 36000 },
-                (error, token) => {
-                    if (error) throw error;
-                    res.json({ token });
-                }
-            )
+            try {
 
+                let token = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 86400 })
+                let activationLink = getActivationLink();
+                console.log(activationLink, token)
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: config.get('nodemailer.email'),
+                        pass: config.get('nodemailer.password')
+                    }
+                });
+
+                let mailOptions = {
+                    from: config.get('nodemailer.email'),
+                    to: user.email,
+                    subject: 'Zaveribook: Account verification',
+                    text: "Verification link: " + activationLink + token
+                }
+
+                transporter.sendMail(mailOptions);
+
+                await user.save();
+
+            } catch (error) {
+                console.log(error);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            return res.json({ 'msg': "User registered successfulyy" })
 
         } catch (error) {
             console.log(error);
@@ -60,6 +77,29 @@ router.post('/',
         }
     }
 );
+
+router.post(
+    '/verify',
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+            let token = req.body.token;
+            const decoded = jwt.verify(token, config.get('jwtSecret'));
+            console.log(token, decoded)
+
+            if (decoded.email) {
+                let user = await UserModel.findOne({ email: decoded.email });
+                user.verified = true;
+                await user.save();
+                return res.json({ "msg": "User verified successfully" });
+            }
+            return res.status(400).json({ 'msg': "Invalid otp" });
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(500).json({ msg: 'Internal Server Error' });
+        }
+    }
+)
 
 router.get(
     '/',

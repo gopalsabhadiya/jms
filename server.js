@@ -25,7 +25,6 @@ app.use('/api/receipt', require('./routes/api/receipt'));
 app.use('/api/cleanup', require('./routes/api/cleanup'));
 app.use('/api/resetpassword', require('./routes/api/resetPassword'));
 
-
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => console.log(`App Started on PORT: ${PORT}`));

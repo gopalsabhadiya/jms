@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const validationMiddleware = require('../../middleware/validation/validate');
 const nodemailer = require('nodemailer');
 const config = require('config');
 const UserModel = require('../../model/user/UserModel');
@@ -57,7 +56,7 @@ router.post(
             let mailOptions = {
                 from: config.get('nodemailer.email'),
                 to: email,
-                subject: 'OTP for password reset',
+                subject: 'Zaveribook: OTP for password reset',
                 text: "OTP: " + otp
             }
 
