@@ -43,6 +43,10 @@ router.post('/',
                 { expiresIn: 86400 }
             );
 
+            let subscriptionEnd = new Date();
+            subscriptionEnd.setTime(subscriptionEnd.getTime() + 15 * 24 * 60 * 60 * 1000)
+            business.subscriptionEnd = new Date(subscriptionEnd.getTime());
+
             await business.save();
 
             counter.business = business._id;

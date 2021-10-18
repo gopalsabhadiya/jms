@@ -29,28 +29,37 @@ router.post(
             console.log(business)
 
             if (business) {
-                let counter = await CounterModel.findOne({ business: business._id })
+                let counter = await CounterModel.findOne({ business: business._id });
+                let currentDate = new Date();
 
                 if (user) {
                     if (await bcrypt.compare(password, user.password)) {
-                        const payload = {
-                            user: {
-                                id: user.id,
-                                business: user.business,
-                                counter: counter._id
-                            }
-                        };
+                        let payload = {};
 
-                        jwt.sign(
+
+                        if (currentDate <= business.subscriptionEnd) {
+                            payload = {
+                                user: {
+                                    id: user.id,
+                                    business: user.business,
+                                    counter: counter._id
+                                }
+                            };
+                        }
+                        else {
+                            payload = {
+                                user: {
+                                    id: user.id
+                                }
+                            };
+                        }
+                        let token = jwt.sign(
                             payload,
                             config.get('jwtSecret'),
-                            { expiresIn: 36000 },
-                            (error, token) => {
-                                if (error) throw error;
-                                res.json({ token });
-                            }
+                            { expiresIn: 36000 }
                         );
-                        return res;
+
+                        return res.json({ token, subscriptionExpired: currentDate > business.subscriptionEnd });
                     }
                 }
 
