@@ -20,11 +20,14 @@ const UserSchema = new mongoose.Schema({
     },
     business: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'businesses',
-        required: true
+        ref: 'businesses'
     },
     authorization: {
         type: String,
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -22,8 +22,8 @@ app.use('/api/bill', require('./routes/api/bill'));
 app.use('/api/item', require('./routes/api/item'));
 app.use('/api/receipt', require('./routes/api/receipt'));
 
-app.use('/api/cleanup', require('./routes/api/cleanup'))
-
+app.use('/api/cleanup', require('./routes/api/cleanup'));
+app.use('/api/resetpassword', require('./routes/api/resetPassword'));
 
 const PORT = process.env.PORT || 8080;
 

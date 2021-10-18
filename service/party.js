@@ -82,6 +82,17 @@ const updatePartyForDeletedOrder = async (order) => {
     await party.save();
 };
 
+const updatePartyForReceipt = async (receipt) => {
+    console.log("Updating party for excess ammount.........");
+    let party = await PartyModel.findById(receipt.party);
+    const excessAmmount = receipt.payments.reduce(
+        (excessAmmount, payment) => excessAmmount -= payment.ammount,
+        receipt.ammount
+    );
+    party.balance += excessAmmount;
+    await party.save();
+}
+
 module.exports =
 {
     updatePartyForPlacedOrder,
@@ -92,5 +103,6 @@ module.exports =
     getPartyById,
     getPartyByBusiness,
     searchParty,
-    deleteParty
+    deleteParty,
+    updatePartyForReceipt
 };

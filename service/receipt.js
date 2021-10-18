@@ -4,6 +4,7 @@ const PaymentModel = require("../model/receipt/PaymentModel");
 const ReceiptModel = require("../model/receipt/ReceiptModel");
 const { PaymentTypeEnum } = require("../util/enum");
 const { getNextReceiptCount } = require("./counter");
+const { updatePartyForReceipt } = require("./party");
 const orderService = import("./order.js");
 
 const createReceiptForSinglePayment = async (user, payment, order) => {
@@ -77,7 +78,7 @@ const getReceiptDetails = async (businessId) => {
 
 const createNewReceipt = async (user, receipt) => {
     console.log('Serving create receipt..........');
-    let payments = receipt.payments.map(payment => {
+    let payments = receipt.payments.filter(payment => payment.ammount !== 0).map(payment => {
         delete payment.orderId;
         const { _id: orderId, ...rest } = payment;
         return { orderId, ...rest };
@@ -92,6 +93,7 @@ const createNewReceipt = async (user, receipt) => {
     receiptModel.receiptId = await getNextReceiptCount(user.counter);
 
     await (await orderService).updateOrderForPayment(receiptModel);
+    await updatePartyForReceipt(receiptModel)
 
     await receiptModel.save();
     return receiptModel;
@@ -104,7 +106,7 @@ const deleteReceipt = async (receiptId) => {
     let receipt = await ReceiptModel.findById(receiptId);
     receipt.invalidated = true;
 
-    let {updateOrdersForDeletedReceipt} = require('./order');
+    let { updateOrdersForDeletedReceipt } = require('./order');
     await updateOrdersForDeletedReceipt(receipt);
 
     await receipt.save();

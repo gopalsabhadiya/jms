@@ -11,8 +11,8 @@ const validationMiddleware = async (request, response, next) => {
     const error = validationResult(request);
 
     if (!error.isEmpty()) {
-        console.log(error);
-        return response.status(400).json(error.array());
+        console.log(error.errors.map(error => error.msg));
+        return response.status(400).json({ 'msg': error.errors.map(error => error.msg)[0] });
     }
 
     next();
