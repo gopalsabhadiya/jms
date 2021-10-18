@@ -13,6 +13,9 @@ const middleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, config.get('jwtSecret'));
         req.user = decoded.user;
+        if (!req.user.business) {
+            return res.status(401).json({ "msg": "Subscription ended" })
+        }
         next();
     } catch (error) {
         console.log("Error while authenticating:", error)

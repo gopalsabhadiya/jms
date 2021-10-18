@@ -38,6 +38,15 @@ const BusinessSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    subscriptionStart: {
+        type: Date,
+        default: Date.now,
+        required: true
+    },
+    subscriptionEnd: {
+        type: Date,
+        required: true
     }
 });
 
