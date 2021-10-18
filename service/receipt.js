@@ -78,7 +78,7 @@ const getReceiptDetails = async (businessId) => {
 
 const createNewReceipt = async (user, receipt) => {
     console.log('Serving create receipt..........');
-    let payments = receipt.payments.map(payment => {
+    let payments = receipt.payments.filter(payment => payment.ammount !== 0).map(payment => {
         delete payment.orderId;
         const { _id: orderId, ...rest } = payment;
         return { orderId, ...rest };

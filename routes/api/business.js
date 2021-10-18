@@ -5,6 +5,8 @@ const authMiddleware = require('../../middleware/auth');
 const BusinessModel = require('../../model/business/BusinessModel');
 const mongoose = require('mongoose');
 const CounterModel = require('../../model/counter/CounterModel');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 /**
  *  @route     POST api/business
@@ -27,6 +29,20 @@ router.post('/',
             business = new BusinessModel(req.body);
             business.users ? business.users.push(req.user.id) : business.users = [].push(req.user.business);
 
+            const payload = {
+                user: {
+                    id: req.user.id,
+                    business: business._id,
+                    counter: counter._id
+                }
+            };
+
+            let token = jwt.sign(
+                payload,
+                config.get('jwtSecret'),
+                { expiresIn: 86400 }
+            );
+
             await business.save();
 
             counter.business = business._id;
@@ -36,7 +52,7 @@ router.post('/',
             user.business = business._id;
             await user.save();
 
-            return res.json({ "msg": "Businsess registered successfully" })
+            return res.json({ token })
 
 
         } catch (error) {
