@@ -20,22 +20,26 @@ router.post(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl)
 
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         try {
-            let user = await UserModel.findOne({ email });
+            let user = await UserModel.findOne({email});
             let business = await BusinessModel.findById(user.business);
 
             console.log(business)
 
             if (business) {
-                let counter = await CounterModel.findOne({ business: business._id });
+                let counter = await CounterModel.findOne({business: business._id});
                 let currentDate = new Date();
 
                 if (user) {
                     if (await bcrypt.compare(password, user.password)) {
                         let payload = {};
-
+                        let csrfPayload = {
+                            user: {
+                                id: user.id,
+                            }
+                        };
 
                         if (currentDate <= business.subscriptionEnd) {
                             payload = {
@@ -45,8 +49,7 @@ router.post(
                                     counter: counter._id
                                 }
                             };
-                        }
-                        else {
+                        } else {
                             payload = {
                                 user: {
                                     id: user.id
@@ -56,16 +59,20 @@ router.post(
                         let token = jwt.sign(
                             payload,
                             config.get('jwtSecret'),
-                            { expiresIn: 36000 }
+                            {expiresIn: 864000}
                         );
-
-                        return res.json({ token, subscriptionExpired: currentDate > business.subscriptionEnd });
+                        let csrfToken = jwt.sign(csrfPayload, config.get('jwtSecret'), {expiresIn: 864000});
+                        console.log("Returning response with cookie");
+                        res.cookie('jwt', token, {maxAge: 864000000, httpOnly: true});
+                        return res.send({
+                            token: csrfToken,
+                            subscriptionExpired: currentDate > business.subscriptionEnd
+                        });
                     }
                 }
 
-                return res.status(400).json({ msg: 'Invalid Credentials' });
-            }
-            else {
+                return res.status(400).json({msg: 'Invalid Credentials'});
+            } else {
                 if (user) {
                     if (await bcrypt.compare(password, user.password)) {
                         const payload = {
@@ -74,20 +81,32 @@ router.post(
                             }
                         };
 
-                        let token = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 36000 });
-                        return res.json({ token, businessRegistered: false });
+                        let token = jwt.sign(payload, config.get('jwtSecret'), {expiresIn: 36000});
+                        return res.json({token, businessRegistered: false});
                     }
                 }
 
-                return res.status(400).json({ msg: 'Invalid Credentials' });
+                return res.status(400).json({msg: 'Invalid Credentials'});
             }
 
 
         } catch (error) {
             console.log(`Error while authenticating User: ${email} \n ${error}`);
-            res.status(500).json({ msg: 'Internal Server Error' });
+            res.status(500).json({msg: 'Internal Server Error'});
         }
     }
 );
+
+router.post(
+    '/validate',
+    async (req, res) => {
+        console.log(req);
+
+        var csrf = req.body;
+        var str = req.cookies['jwt'];
+        console.log(csrf, str);
+        return res;
+    }
+)
 
 module.exports = router;
