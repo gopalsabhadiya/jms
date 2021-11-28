@@ -100,12 +100,19 @@ router.post(
 router.post(
     '/validate',
     async (req, res) => {
-        console.log(req);
+        console.log("Validating authentication");
 
-        var csrf = req.body;
-        var str = req.cookies['jwt'];
-        console.log(csrf, str);
-        return res;
+        var csrfToken = req.body;
+        var jwtToken = req.cookies['jwt'];
+
+        console.log("Your tokens:", csrfToken, jwtToken)
+
+        const decodedCsrf = jwt.verify(csrfToken.token, config.get('jwtSecret'));
+        const decodedJwt = jwt.verify(jwtToken, config.get('jwtSecret'));
+
+        console.log("Returning 200 ok")
+
+        return res.status(200).json({"msg": "validated"});
     }
 )
 
