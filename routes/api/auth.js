@@ -105,12 +105,28 @@ router.post(
         var csrfToken = req.body;
         var jwtToken = req.cookies['jwt'];
 
-        console.log("Your tokens:", csrfToken, jwtToken)
+        if (!jwtToken) {
+            const decodedCsrf = jwt.verify(csrfToken.token, config.get('jwtSecret'));
+            let user = await UserModel.findById(decodedCsrf.user.id);
+            let counter = await CounterModel.findOne({business: user.business});
+            console.log(user, counter);
 
-        const decodedCsrf = jwt.verify(csrfToken.token, config.get('jwtSecret'));
-        const decodedJwt = jwt.verify(jwtToken, config.get('jwtSecret'));
+            payload = {
+                user: {
+                    id: user.id,
+                    business: user.business,
+                    counter: counter._id
+                }
+            };
 
-        console.log("Returning 200 ok")
+            let token = jwt.sign(
+                payload,
+                config.get('jwtSecret'),
+                {expiresIn: 864000}
+            );
+            res.cookie('jwt', token, {maxAge: 864000000, httpOnly: true});
+        }
+
 
         return res.status(200).json({"msg": "validated"});
     }

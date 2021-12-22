@@ -9,6 +9,9 @@ const PartySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String
+    },
     contactNo: {
         type: String,
         required: true

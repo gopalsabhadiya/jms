@@ -20,7 +20,11 @@ const validationMiddleware = async (request, response, next) => {
 
 const getValidationList = (request) => {
     try {
-        return ValidationDictionary[request.baseUrl][request.method];
+        if(ValidationDictionary[request.baseUrl]) {
+
+            return ValidationDictionary[request.baseUrl][request.method];
+        }
+        return [];
     } catch (error) {
         console.log(error);
         return [];

@@ -1,6 +1,8 @@
 const PartyModel = require("../model/party/PartyModel");
 const { roundTo } = require("../util/numberUtils");
 const { getNextPartyCount } = require("./counter");
+const mongoose = require('mongoose');
+
 
 const createParty = async (user, party) => {
     let partyModel = new PartyModel(party);
@@ -26,8 +28,18 @@ const getPartyById = async (partyId) => {
     return party;
 };
 
-const getPartyByBusiness = async (businessId) => {
-    let parties = await PartyModel.find({ business: businessId });
+const getPartyByBusiness = async (businessId, pageNumber, searchTerm) => {
+    console.log('SearchTerm:' + searchTerm + pageNumber);
+    var query = {};
+    query["business"] = businessId;
+    if (searchTerm) {
+        query.$or = [];
+        query.$or.push({"name": new RegExp(searchTerm, 'gi')});
+        query.$or.push({"contactNo": new RegExp(searchTerm, 'gi')});
+        query.$or.push({"gstin": new RegExp(searchTerm, 'gi')});
+        console.log(query);
+    }
+    let parties = await PartyModel.find(query).sort({"_id":-1}).skip(20*(pageNumber-1)).limit(20);
     return parties;
 };
 
@@ -93,6 +105,17 @@ const updatePartyForReceipt = async (receipt) => {
     await party.save();
 }
 
+const getFirstParty = async (businessId) => {
+    let party = await PartyModel.find({ business: businessId }).sort({"_id":-1}).limit(1);
+    return party[0];
+};
+
+const getNextParty = async (businessId, previousPartyId) => {
+    let allParties = await PartyModel.find({business: businessId, _id: {"$lt": mongoose.Types.ObjectId(previousPartyId)}});
+    let party = await PartyModel.find({business: businessId, _id: {$lt: mongoose.Types.ObjectId(previousPartyId)}}).sort({"_id":-1}).limit(1);
+    return party[0];
+}
+
 module.exports =
 {
     updatePartyForPlacedOrder,
@@ -104,5 +127,7 @@ module.exports =
     getPartyByBusiness,
     searchParty,
     deleteParty,
-    updatePartyForReceipt
+    updatePartyForReceipt,
+    getFirstParty,
+    getNextParty
 };

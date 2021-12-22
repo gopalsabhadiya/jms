@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-const { createParty, updateParty, getPartyByBusiness, searchParty, deleteParty, getPartyById } = require('../../service/party');
+const { createParty, updateParty, getPartyByBusiness, searchParty, deleteParty, getPartyById, getFirstParty, getNextParty } = require('../../service/party');
 
 
 /**
@@ -32,6 +32,7 @@ router.put('/',
         console.log("Serving request:", req.baseUrl);
         try {
 
+
             let party = await updateParty(req.body);
             return res.json(party);
 
@@ -47,8 +48,9 @@ router.get('/',
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
+            console.log("Page:" + req.query.page);
 
-            let party = await getPartyByBusiness(req.user.business);
+            let party = await getPartyByBusiness(req.user.business, parseInt(req.query.page), req.query.searchTerm);
             return res.json(party);
 
         } catch (error) {
@@ -58,21 +60,23 @@ router.get('/',
     }
 );
 
-router.get('/:party_id',
-    authMiddleware,
-    async (req, res) => {
-        console.log("Serving request:", req.baseUrl);
-        try {
 
-            let party = await getPartyById(req.params.party_id);
-            return res.json(party);
 
-        } catch (error) {
-            console.log(error);
-            return res.status(500).send('Internal Server Error');
-        }
-    }
-);
+// router.get('/:party_id',
+//     authMiddleware,
+//     async (req, res) => {
+//         console.log("Serving request:", req.baseUrl);
+//         try {
+//
+//             let party = await getPartyById(req.params.party_id);
+//             return res.json(party);
+//
+//         } catch (error) {
+//             console.log(error);
+//             return res.status(500).send('Internal Server Error');
+//         }
+//     }
+// );
 
 router.delete('/:party_id',
     authMiddleware,
