@@ -50,7 +50,9 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let items = await getItemByBusiness(req.user.business);
+            console.log("Page:" + req.query.page);
+
+            let items = await getItemByBusiness(req.user.business, parseInt(req.query.skip), req.query.searchTerm);
             return res.json(items);
 
         } catch (error) {

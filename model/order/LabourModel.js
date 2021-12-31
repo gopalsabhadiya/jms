@@ -5,7 +5,7 @@ const LabourSchema = new mongoose.Schema({
     value: {
         type: Number,
         required: true,
-        default: 1
+        default: 0
     },
     type: {
         type: String,

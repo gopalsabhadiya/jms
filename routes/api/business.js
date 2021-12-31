@@ -68,26 +68,28 @@ router.post('/',
 
 
 
-// router.get(
-//     '/:business_id',
-//     authMiddleware,
-//     async (req, res) => {
-//         console.log("Serving request:", req.baseUrl);
-//         try {
-//             let business = await BusinessModel.findOne({ _id: req.params.business_id, user: req.user.id });
+router.get(
+    '/',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving request:", req.baseUrl);
+        try {
+            console.log("User: " + JSON.stringify(req.user));
+            let business = await BusinessModel.findOne({ _id: req.user.business, users: req.user.id });'' +
+            console.log("Business: " + business);
 
-//             if (business) {
-//                 return res.status(200).json(business);
-//             }
+            if (business) {
+                return res.status(200).json(business);
+            }
 
-//             return res.status(404).json({ msg: 'Business not found' });
+            return res.status(404).json({ msg: 'Business not found' });
 
-//         } catch (error) {
-//             console.error(`Error while fetching Business: ${req.params.business_id}`);
-//             return res.status(500).send(error.message);
-//         }
-//     }
-// );
+        } catch (error) {
+            console.error(`Error while fetching Business: ${req.params.business_id}`);
+            return res.status(500).send(error.message);
+        }
+    }
+);
 
 router.delete(
     '/:business_id',

@@ -17,6 +17,7 @@ router.post('/',
         try {
 
             let party = await createParty(req.user, req.body);
+            console.log("Returning:" + JSON.stringify(party.toObject({getters: true})));
             return res.json(party);
 
         } catch (error) {
@@ -50,7 +51,7 @@ router.get('/',
         try {
             console.log("Page:" + req.query.page);
 
-            let party = await getPartyByBusiness(req.user.business, parseInt(req.query.page), req.query.searchTerm);
+            let party = await getPartyByBusiness(req.user.business, parseInt(req.query.skip), req.query.searchTerm);
             return res.json(party);
 
         } catch (error) {

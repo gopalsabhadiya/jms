@@ -27,8 +27,19 @@ const getItemById = async (itemId) => {
     return item;
 };
 
-const getItemByBusiness = async (businessId) => {
-    let items = await ItemModel.find({ business: businessId, stockPieces: { $gt: 0 } });
+const getItemByBusiness = async (businessId, skip, searchTerm) => {
+    console.log('SearchTerm:' + searchTerm + skip);
+    var query = {};
+    query["business"] = businessId;
+    query["stockPieces"] = {$gt: 0};
+    if (searchTerm) {
+        query.$or = [];
+        query.$or.push({"name": new RegExp(searchTerm, 'gi')});
+        query.$or.push({"huid": new RegExp(searchTerm, 'gi')});
+        query.$or.push({"itemId": new RegExp(searchTerm, 'gi')});
+        console.log(query);
+    }
+    let items = await ItemModel.find(query).sort({"_id":-1}).skip(skip).limit(20);
     return items;
 };
 

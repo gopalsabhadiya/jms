@@ -28,7 +28,7 @@ const updateInventoryForPlacedOrder = async (user, items) => {
     }
 
     for (let item of itemsToBeUpdated) {
-        item = await item.save();;
+        item = await item.save();
     }
 
 }

@@ -47,7 +47,11 @@ const BusinessSchema = new mongoose.Schema({
     subscriptionEnd: {
         type: Date,
         required: true
-    }
+    },
+    extras: [{
+        type: String
+    }]
+
 });
 
 module.exports = BusinessModel = mongoose.model('business', BusinessSchema);

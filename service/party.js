@@ -5,17 +5,16 @@ const mongoose = require('mongoose');
 
 
 const createParty = async (user, party) => {
+    console.log("Party Creating: " + JSON.stringify(party));
     let partyModel = new PartyModel(party);
 
     partyModel.partyId = await getNextPartyCount(user.counter);
 
-    partyModel.type = "Retail";
     partyModel.user = user.id;
     partyModel.business = user.business
 
-    await partyModel.save();
+    return await partyModel.save();
 
-    return partyModel;
 };
 
 const updateParty = async (party) => {
@@ -28,8 +27,8 @@ const getPartyById = async (partyId) => {
     return party;
 };
 
-const getPartyByBusiness = async (businessId, pageNumber, searchTerm) => {
-    console.log('SearchTerm:' + searchTerm + pageNumber);
+const getPartyByBusiness = async (businessId, skip, searchTerm) => {
+    console.log('SearchTerm:' + searchTerm + skip);
     var query = {};
     query["business"] = businessId;
     if (searchTerm) {
@@ -37,9 +36,10 @@ const getPartyByBusiness = async (businessId, pageNumber, searchTerm) => {
         query.$or.push({"name": new RegExp(searchTerm, 'gi')});
         query.$or.push({"contactNo": new RegExp(searchTerm, 'gi')});
         query.$or.push({"gstin": new RegExp(searchTerm, 'gi')});
+        query.$or.push({"partyId": new RegExp(searchTerm, 'gi')});
         console.log(query);
     }
-    let parties = await PartyModel.find(query).sort({"_id":-1}).skip(20*(pageNumber-1)).limit(20);
+    let parties = await PartyModel.find(query).sort({"_id":-1}).skip(skip).limit(20);
     return parties;
 };
 

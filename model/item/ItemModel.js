@@ -5,7 +5,7 @@ const { ItemQueriesPlugin } = require('./plugin/ItemPlugin');
 
 const ItemSchema = new mongoose.Schema({
     itemId: {
-        type: Number
+        type: String
     },
     category: {
         type: String,

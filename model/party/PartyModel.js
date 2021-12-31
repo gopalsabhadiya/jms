@@ -3,7 +3,7 @@ const { PartyTypeEnum } = require('../../util/enum');
 
 const PartySchema = new mongoose.Schema({
     partyId: {
-        type: Number
+        type: String
     },
     name: {
         type: String,
