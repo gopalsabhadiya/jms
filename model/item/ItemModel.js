@@ -50,6 +50,10 @@ const ItemSchema = new mongoose.Schema({
         ref: 'users',
         required: true
     },
+    hasImages: {
+        type: Boolean,
+        default: false
+    },
     business: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',

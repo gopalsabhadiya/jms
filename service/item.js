@@ -39,8 +39,7 @@ const getItemByBusiness = async (businessId, skip, searchTerm) => {
         query.$or.push({"itemId": new RegExp(searchTerm, 'gi')});
         console.log(query);
     }
-    let items = await ItemModel.find(query).sort({"_id":-1}).skip(skip).limit(20);
-    return items;
+    return ItemModel.find(query).sort({"_id": -1}).skip(skip).limit(20);
 };
 
 const deleteItem = async (itemId) => {
