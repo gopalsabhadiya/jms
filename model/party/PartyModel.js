@@ -68,7 +68,7 @@ PartySchema.statics = {
                 { 'name': new RegExp(q, 'gi') },
                 { 'contactNo': new RegExp(q, 'gi') },
             ]
-        }, callback).select({ 'name': 1, 'contactNo': 1, 'partyId': 1 });
+        }, callback).select({ 'name': 1, 'contactNo': 1, 'partyId': 1, 'balance':1, "type":1 });
     }
 }
 
