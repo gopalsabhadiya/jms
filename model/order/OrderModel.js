@@ -6,7 +6,7 @@ const { OrderQueriesPlugin } = require('./plugin/OrderPlugin');
 
 const OrderSchema = new mongoose.Schema({
     orderId: {
-        type: Number
+        type: String
     },
     items: [OrderItemModel.schema],
     netAmmount: {

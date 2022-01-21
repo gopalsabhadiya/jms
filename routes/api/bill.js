@@ -9,6 +9,9 @@ const mongoose = require('mongoose');
 const { BILLHTML } = require('../../util/staticdata');
 const { ExtraChargablesTypeEnum, LabourTypeEnum } = require('../../util/enum');
 const { roundOff } = require('../../util/ammountCalculator');
+const fs = require('fs');
+const pdf = require('html-pdf');
+
 
 
 
@@ -17,13 +20,13 @@ const { roundOff } = require('../../util/ammountCalculator');
  *  @desc      Register User
  *  @access    Public
  */
-router.post('/',
+router.get('/:order_id',
     [authMiddleware, validationMiddleware],
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
 
-            let order = JSON.parse(JSON.stringify(await OrderModel.findById(req.body.orderId)));
+            let order = JSON.parse(JSON.stringify(await OrderModel.findById(req.params.order_id)));
             let party = await PartyModel.findById(order.party);
             let business = await BusinessModel.findOne({ _id: req.user.business });
             roundOff(order);
@@ -37,7 +40,13 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'Order doesn\'t exists' }] });
             }
 
-            return res.json(eval("`" + BILLHTML + "`"));
+            // const html = fs.readFileSync('./test/businesscard.html', 'utf8');
+            const options = { format: 'A4' };
+
+            var pdfValue = pdf.create(eval("`" + BILLHTML + "`"), options).toStream(function(err, stream){
+                res.contentType("application/pdf");
+                stream.pipe(res);
+            });
 
         } catch (error) {
             console.log(error);

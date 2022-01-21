@@ -7,7 +7,6 @@ const ExtraChargablesSchema = new mongoose.Schema({
     },
     pieces: {
         type: Number,
-        required: true,
         default: 0
     },
     labourCharge: {
@@ -15,8 +14,7 @@ const ExtraChargablesSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: Object.values(ExtraChargablesTypeEnum),
-        required: true
+        required: true,
     },
 });
 

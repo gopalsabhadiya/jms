@@ -1,6 +1,6 @@
 const PartyTypeEnum = Object.freeze({ CUSTOMER: "Customer", RETAIL: "Retail" });
 const BalanceTypeEnum = Object.freeze({ DEBIT: "Debit", CREDIT: "Credit" });
-const LabourTypeEnum = Object.freeze({ PERCENTAGE: "Percentage", PER_GRAM: "Per Gram", TOTAL: "Total" });
+const LabourTypeEnum = Object.freeze({ PERCENTAGE: "PERCENTAGE", PER_GRAM: "PER_GRAM", TOTAL: "TOTAL" });
 const ExtraChargablesTypeEnum = Object.freeze({ HALL_MARK: "Hall Mark", DAIMOND: "Diamond", RHODIUM: "Rhodium" });
 const PaymentModeEnum = Object.freeze({ CHECK: "Check", CASH: "Cash", ONLINE: "Online" });
 const PaymentTypeEnum = Object.freeze({ PAID: "Paid", RECEIVED: "Received" });

@@ -4,7 +4,8 @@ const { createItem } = require("./item");
 
 
 const updateInventoryForPlacedOrder = async (user, items) => {
-    console.log("Updating Inventory................")
+    console.log("Updating Inventory................ ");
+    console.log(items);
     let itemsToBeUpdated = [];
 
     for (let item of items) {
@@ -27,9 +28,9 @@ const updateInventoryForPlacedOrder = async (user, items) => {
         itemsToBeUpdated.push(stockItem);
     }
 
-    for (let item of itemsToBeUpdated) {
-        item = await item.save();
-    }
+    // for (let item of itemsToBeUpdated) {
+    //     item = await item.save();
+    // }
 
 }
 

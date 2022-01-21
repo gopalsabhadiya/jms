@@ -10,7 +10,7 @@ const calculateOrder = (order) => {
         prepareOrder(order);
 
         for (let i = 0; i < order.items.length; i++) {
-            updateItem(order.items[i]);
+            updateItem(order.items[i], order.goldRate);
             netAmmount += order.items[i].netAmmount;
         }
 
@@ -48,7 +48,8 @@ const calculateOrder = (order) => {
     }
 };
 
-const updateItem = (item) => {
+const updateItem = (item, goldRate) => {
+    item.rate = goldRate;
     try {
         item.extras = item.extras.filter((extra) => extra.type);
 

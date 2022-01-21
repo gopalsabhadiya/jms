@@ -8,6 +8,7 @@ const { createReceiptForSinglePayment, updateReceiptForDeletdOrder } = require("
 const createOrder = async (user, order) => {
 
     console.log('Creating new order.............');
+    console.log(order);
 
     calculateOrder(order);
 
@@ -27,9 +28,7 @@ const createOrder = async (user, order) => {
     }
     roundOff(orderModel);
 
-    await orderModel.save();
-
-    return orderModel._id;
+    return await orderModel.save();
 };
 
 const deleteOrder = async (user, orderId) => {

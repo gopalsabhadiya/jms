@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const middleware = (req, res, next) => {
+    console.log("Authenticating");
     //get token from header
     const token = req.header('x-auth-token');
     var jwtToken = req.cookies['jwt'];
@@ -14,7 +15,6 @@ const middleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(jwtToken, config.get('jwtSecret'));
         req.user = decoded.user;
-        console.log("Decoded:" + decoded)
         if (!req.user.business) {
             return res.status(401).json({ "msg": "Subscription ended" })
         }

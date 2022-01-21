@@ -15,8 +15,8 @@ router.post('/',
     async (req, res) => {
         console.log("Serving post request:", req.baseUrl);
         try {
-            let orderId = await createOrder(req.user, req.body);
-            res.json({ orderId });
+            let order = await createOrder(req.user, req.body);
+            res.json(order);
 
         } catch (error) {
             console.log(error);

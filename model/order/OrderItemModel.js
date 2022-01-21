@@ -7,6 +7,14 @@ const OrderItemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    category: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
     grossWeight: {
         type: Number,
         required: true,
