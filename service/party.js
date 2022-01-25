@@ -22,8 +22,8 @@ const updateParty = async (party) => {
     return party;
 };
 
-const getPartyById = async (partyId) => {
-    let party = await PartyModel.findById(partyId);
+const getPartyById = async (businessId, partyId) => {
+    let party = await PartyModel.findOne({"business": businessId, "_id": partyId});
     return party;
 };
 

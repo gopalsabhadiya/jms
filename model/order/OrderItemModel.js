@@ -28,7 +28,7 @@ const OrderItemSchema = new mongoose.Schema({
     },
     rate: {
         type: Number,
-        required: true
+        // required: true
     },
     labour: LabourModel.schema,
     itemAmmount: {

@@ -6,40 +6,63 @@ const orderDetailsAggregate = [
             'business': '',
             invalidated: { $ne: true }
         }
-    }, {
+    },
+    {
         '$lookup': {
             'from': 'parties',
             'localField': 'party',
             'foreignField': '_id',
             'as': 'party'
         }
-    }, {
+    },
+    {
         '$project': {
             'billOutstanding': 1,
             'totalAmmount': 1,
             'orderId': 1,
             'fulfilled': 1,
             'party': {
+                '_id': 1,
                 'name': 1,
                 'contactNo': 1
             },
-            'date': {
-                '$dateToString': {
-                    'format': '%d-%m-%Y',
-                    'date': '$date'
-                }
-            }
+            // 'date': {
+            //     '$dateToString': {
+            //         'format': '%d-%m-%Y',
+            //         'date': '$date'
+            //     }
+            // }
+            'date': 1,
         }
-    }, {
+    },
+    {
         '$unwind': {
             'path': '$party'
         }
+    },
+    {
+        '$match': {
+
+        }
+    },
+    {
+        '$sort' : {
+            '_id': -1
+        }
+    },
+    {
+        '$skip': 0
+    },
+    {
+        '$limit': 20
     }
 ];
 
 
-function getOrderDetails(businessId, callback) {
+function getOrderDetails(businessId, skip, searchQuery, callback) {
     orderDetailsAggregate[0]['$match']['business'] = mongoose.Types.ObjectId(businessId);
+    orderDetailsAggregate[4]['$match'] = searchQuery;
+    orderDetailsAggregate[6]['$skip'] = skip;
 
     return this.aggregate(orderDetailsAggregate);
 };

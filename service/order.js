@@ -53,11 +53,27 @@ const getOrder = async (orderId) => {
     return order;
 };
 
-const getOrderDetails = async (businessId) => {
+const getOrderDetailsByBusiness = async (businessId, skip, searchTerm) => {
     console.log('Serving order details.............');
 
-    let orderDetails = await OrderModel.getDetails(businessId);
+    console.log('SearchTerm:' + searchTerm + skip);
+    var matchQuery = {};
+    if (searchTerm) {
+        matchQuery.$or = [];
+        matchQuery.$or.push({"party.name": new RegExp(searchTerm, 'gi')});
+        matchQuery.$or.push({"party.contactNo": new RegExp(searchTerm, 'gi')});
+        matchQuery.$or.push({"orderId": new RegExp(searchTerm, 'gi')});
+        console.log(JSON.stringify(matchQuery));
+    }
+
+
+    let orderDetails = await OrderModel.getDetails(businessId, skip,  matchQuery);
     return orderDetails;
+}
+
+const getOrderById = async (businessId, orderId) => {
+    let orders = await OrderModel.findOne({"business": businessId, "_id": orderId});
+    return orders;
 }
 
 const updateOrder = async (user, order) => {
@@ -135,9 +151,10 @@ module.exports =
     createOrder,
     deleteOrder,
     getOrder,
-    getOrderDetails,
+    getOrderDetailsByBusiness,
     updateOrder,
     getUnpaidOrders,
     updateOrderForPayment,
-    updateOrdersForDeletedReceipt
+    updateOrdersForDeletedReceipt,
+    getOrderById
 };

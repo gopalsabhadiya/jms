@@ -35,6 +35,8 @@ app.use('/api/daily_gold_rate', require('./routes/api/daily_gold_rate'));
 app.use('/api/cleanup', require('./routes/api/cleanup'));
 app.use('/api/resetpassword', require('./routes/api/resetPassword'));
 
+app.use('/api/dboperation', require('./routes/api/dboperation'));
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => console.log(`App Started on PORT: ${PORT}`));

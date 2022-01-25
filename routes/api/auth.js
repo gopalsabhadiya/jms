@@ -105,6 +105,8 @@ router.post(
         var csrfToken = req.body;
         var jwtToken = req.cookies['jwt'];
 
+        console.log('Csrf:' + csrfToken + " JWT:"+jwtToken);
+
         if (!jwtToken) {
             const decodedCsrf = jwt.verify(csrfToken.token, config.get('jwtSecret'));
             let user = await UserModel.findById(decodedCsrf.user.id);

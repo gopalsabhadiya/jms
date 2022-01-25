@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-const { createOrder, deleteOrder, getOrder, getOrderDetails, updateOrder, getUnpaidOrders } = require('../../service/order');
+const { createOrder, deleteOrder, getOrder, getOrderDetailsByBusiness, updateOrder, getUnpaidOrders, getOrderById } = require('../../service/order');
 
 
 /**
@@ -84,7 +84,22 @@ router.get(
     async (req, res) => {
         console.log("Serving get request:", req.baseUrl);
         try {
-            let orderDetails = await getOrderDetails(req.user.business);
+            let orderDetails = await getOrderDetailsByBusiness(req.user.business, parseInt(req.query.skip), req.query.searchTerm);
+            return res.json(orderDetails);
+        } catch (error) {
+            console.log("Error while fetching order details:", error)
+        }
+    }
+);
+
+router.get(
+    '/id/:order_id',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving get request:", req.baseUrl);
+        try {
+            let orderDetails = await getOrderById(req.user.business, req.params.order_id);
+            console.log("Order:"+JSON.stringify(orderDetails));
             return res.json(orderDetails);
         } catch (error) {
             console.log("Error while fetching order details:", error)

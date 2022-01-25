@@ -61,6 +61,20 @@ router.get('/',
     }
 );
 
+router.get(
+    '/id/:party_id',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving get request:", req.baseUrl);
+        try {
+            let partyDetails = await getPartyById(req.user.business, req.params.party_id);
+            return res.json(partyDetails);
+        } catch (error) {
+            console.log("Error while fetching party details:", error)
+        }
+    }
+);
+
 
 
 // router.get('/:party_id',

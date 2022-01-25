@@ -72,7 +72,11 @@ const OrderSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    goldRate: {
+        type: Number,
+        required: true
+    },
 });
 
 OrderSchema.plugin(OrderQueriesPlugin);
