@@ -76,6 +76,11 @@ const getOrderById = async (businessId, orderId) => {
     return orders;
 }
 
+const getOrderBatchById = async (businessId, orderIdList) => {
+    let orders = await OrderModel.find().where('_id').in(orderIdList);
+    return orders;
+}
+
 const updateOrder = async (user, order) => {
     console.log('Updating order.............');
 
@@ -156,5 +161,6 @@ module.exports =
     getUnpaidOrders,
     updateOrderForPayment,
     updateOrdersForDeletedReceipt,
-    getOrderById
+    getOrderById,
+    getOrderBatchById,
 };

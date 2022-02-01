@@ -6,7 +6,7 @@ const { PaymentModeEnum } = require('../../util/enum');
 
 const ReceiptSchema = new mongoose.Schema({
     receiptId: {
-        type: Number
+        type: String
     },
     ammount: {
         type: Number,

@@ -72,7 +72,7 @@ function updateReceipt(orderId, receiptId, callback) {
 }
 
 function getUnpaidOrders(businessId, partId, callback) {
-    return this.find({ business: mongoose.Types.ObjectId(businessId), fulfilled: false, invalidated: false }).select({ orderId: 1, finalAmmount: 1, billOutstanding: 1 })
+    return this.find({ business: mongoose.Types.ObjectId(businessId), fulfilled: false, invalidated: false });
 }
 
 function getAllOrdersById(orderIds, callback) {

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validationMiddleware = require('../../middleware/validation/validate');
 const authMiddleware = require('../../middleware/auth');
-const { createOrder, deleteOrder, getOrder, getOrderDetailsByBusiness, updateOrder, getUnpaidOrders, getOrderById } = require('../../service/order');
+const { createOrder, deleteOrder, getOrder, getOrderDetailsByBusiness, updateOrder, getUnpaidOrders, getOrderById, getOrderBatchById } = require('../../service/order');
 
 
 /**
@@ -21,6 +21,22 @@ router.post('/',
         } catch (error) {
             console.log(error);
             res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+
+router.post(
+    '/batch',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving get request:", req.baseUrl);
+        try {
+            let orderDetailsList = await getOrderBatchById(req.user, req.body);
+            console.log("Order:"+JSON.stringify(orderDetailsList));
+            return res.json(orderDetailsList);
+        } catch (error) {
+            console.log("Error while fetching order details:", error)
         }
     }
 );

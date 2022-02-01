@@ -4,7 +4,7 @@ const authMiddleware = require('../../middleware/auth');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
 const ReceiptModel = require('../../model/receipt/ReceiptModel');
-const { getReceiptDetails, createNewReceipt, getReceiptWithParty, deleteReceipt } = require('../../service/receipt');
+const { getReceiptDetails, createNewReceipt, getReceiptWithParty, deleteReceipt, getReceiptById } = require('../../service/receipt');
 const { prepareOrderDetailsForReceipt } = require('../../util/receipt');
 
 /**
@@ -83,13 +83,30 @@ router.delete(
     }
 );
 
-router.get('/',
+router.get('/details',
     authMiddleware,
     async (req, res) => {
         console.log("Serving new request search:", req.baseUrl);
         try {
             let receipts = await getReceiptDetails(req.user.business);
+            console.log(receipts);
             return res.json(receipts);
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send('Internal Server Error');
+        }
+    }
+);
+
+router.get('/id/:receipt_id',
+    authMiddleware,
+    async (req, res) => {
+        console.log("Serving new request search:", req.baseUrl);
+        try {
+            console.log(req.params.receipt_id);
+            let receipt = await getReceiptById(req.user.business, req.params.receipt_id);
+            console.log(receipt);
+            return res.json(receipt);
         } catch (error) {
             console.log(error);
             return res.status(500).send('Internal Server Error');

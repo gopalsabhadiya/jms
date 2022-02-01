@@ -21,20 +21,17 @@ const receiptDetailsAggregate = [
         }
     }, {
         '$project': {
+            'receiptId':1,
             'paymentMode': 1,
             'ammount': 1,
+            'activeAmmount': 1,
             'party': {
                 'partyId': 1,
                 'name': 1,
                 'contactNo': 1,
                 '_id': 1
             },
-            'date': {
-                '$dateToString': {
-                    'format': '%d-%m-%Y',
-                    'date': '$date'
-                }
-            }
+            'date': 1,
         }
     }, {
         '$unwind': {
@@ -72,12 +69,7 @@ const viewReceiptAggregate = [
             'paymentMode': 1,
             'receiptId': 1,
             'business': 1,
-            'date': {
-                '$dateToString': {
-                    'format': '%d-%m-%Y',
-                    'date': '$date'
-                }
-            },
+            'date': 1,
             'party': {
                 'name': 1,
                 'contactNo': 1,

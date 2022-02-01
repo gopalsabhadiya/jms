@@ -77,12 +77,8 @@ const getReceiptDetails = async (businessId) => {
 }
 
 const createNewReceipt = async (user, receipt) => {
-    console.log('Serving create receipt..........');
-    let payments = receipt.payments.filter(payment => payment.ammount !== 0).map(payment => {
-        delete payment.orderId;
-        const { _id: orderId, ...rest } = payment;
-        return { orderId, ...rest };
-    });
+    console.log('Serving create receipt..........' + JSON.stringify(receipt));
+    let payments = receipt.payments.filter(payment => payment.ammount !== 0);
     receipt.activeAmmount = receipt.ammount;
     receipt.payments = payments;
     receipt.business = user.business;
@@ -129,6 +125,11 @@ const getReceiptWithParty = async (receptId) => {
     return receipt;
 };
 
+const getReceiptById = async (businessId, orderId) => {
+    return ReceiptModel.findOne({"business": businessId, "_id": orderId});
+}
+
+
 module.exports =
 {
     createReceiptForSinglePayment,
@@ -136,5 +137,6 @@ module.exports =
     getReceiptDetails,
     createNewReceipt,
     getReceiptWithParty,
-    deleteReceipt
+    deleteReceipt,
+    getReceiptById
 };
