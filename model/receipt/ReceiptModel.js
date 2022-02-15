@@ -52,7 +52,7 @@ const ReceiptSchema = new mongoose.Schema({
         type: String
     },
     aadhar: {
-        type: String
+        type: Number
     },
     activeAmmount: {
         type: Number,

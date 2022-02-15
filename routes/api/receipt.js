@@ -4,7 +4,7 @@ const authMiddleware = require('../../middleware/auth');
 const PartyModel = require('../../model/party/PartyModel');
 const { RECEIPT_HTML } = require('../../util/staticdata');
 const ReceiptModel = require('../../model/receipt/ReceiptModel');
-const { getReceiptDetails, createNewReceipt, getReceiptWithParty, deleteReceipt, getReceiptById } = require('../../service/receipt');
+const { getReceiptDetails, createNewReceipt, getReceiptWithParty, deleteReceipt, getReceiptById, getReceiptDetailsByBusiness } = require('../../service/receipt');
 const { prepareOrderDetailsForReceipt } = require('../../util/receipt');
 
 /**
@@ -20,7 +20,7 @@ router.post(
         console.log("Serving request:", req.baseUrl);
         try {
             let receipt = await createNewReceipt(req.user, req.body);
-            receipt = await getReceiptWithParty(receipt._id);
+            // receipt = await getReceiptWithParty(receipt._id);
 
             return res.json(receipt);
         } catch (error) {
@@ -88,7 +88,7 @@ router.get('/details',
     async (req, res) => {
         console.log("Serving new request search:", req.baseUrl);
         try {
-            let receipts = await getReceiptDetails(req.user.business);
+            let receipts = await getReceiptDetailsByBusiness(req.user.business, parseInt(req.query.skip), req.query.searchTerm);
             console.log(receipts);
             return res.json(receipts);
         } catch (error) {

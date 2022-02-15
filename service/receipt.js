@@ -76,6 +76,27 @@ const getReceiptDetails = async (businessId) => {
     return receiptDetails;
 }
 
+const getReceiptDetailsByBusiness =  async (businessId, skip, searchTerm) => {
+    console.log('Serving order details.............');
+
+    console.log('SearchTerm:' + searchTerm + skip);
+    var matchQuery = {};
+    if (searchTerm) {
+        matchQuery.$or = [];
+        matchQuery.$or.push({"party.name": new RegExp(searchTerm, 'gi')});
+        matchQuery.$or.push({"party.contactNo": new RegExp(searchTerm, 'gi')});
+        matchQuery.$or.push({"receiptId": new RegExp(searchTerm, 'gi')});
+        if(!isNaN(searchTerm)) {
+            matchQuery.$or.push({"ammount": parseInt(searchTerm)});
+        }
+        console.log(JSON.stringify(matchQuery));
+    }
+
+
+    let receiptDetails = await ReceiptModel.getDetails(businessId, skip,  matchQuery);
+    return receiptDetails;
+}
+
 const createNewReceipt = async (user, receipt) => {
     console.log('Serving create receipt..........' + JSON.stringify(receipt));
     let payments = receipt.payments.filter(payment => payment.ammount !== 0);
@@ -138,5 +159,6 @@ module.exports =
     createNewReceipt,
     getReceiptWithParty,
     deleteReceipt,
-    getReceiptById
+    getReceiptById,
+    getReceiptDetailsByBusiness
 };

@@ -22,7 +22,7 @@ const BusinessSchema = new mongoose.Schema({
         unique: true
     },
     contactNo: [{
-        type: Number,
+        type: String,
         required: true
     }],
     users: [{
