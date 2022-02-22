@@ -48,9 +48,10 @@ const BusinessSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    extras: [{
-        type: String
-    }]
+    extras: {
+        type: Map,
+        of: Boolean
+    }
 
 });
 

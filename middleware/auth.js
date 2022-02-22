@@ -9,6 +9,7 @@ const middleware = (req, res, next) => {
 
     //check if no token 
     if (!jwtToken) {
+        console.log("No Token" + token);
         return res.status(401).json({ msg: 'No auth token provided' });
     }
 

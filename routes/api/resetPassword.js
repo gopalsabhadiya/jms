@@ -17,14 +17,34 @@ router.post(
         console.log("Email request:", req.baseUrl)
         try {
             let resetPasswordPayload = req.body;
-            const decoded = jwt.verify(resetPasswordPayload.token, config.get('jwtSecret'));
+            const decoded = jwt.verify(req.cookies['jwt'], config.get('jwtSecret'));
             if (decoded.otp.toString() === resetPasswordPayload.otp) {
-                let user = await UserModel.findOne({ email: resetPasswordPayload.email });
+                let user = await UserModel.findOne({ email: decoded.email });
                 const salt = await bcrypt.genSalt(10);
                 user.password = await bcrypt.hash(req.body.password, salt);
                 await user.save();
                 return res.json({ "msg": "Password changed successfully" });
             }
+            return res.status(400).json({ 'msg': "Invalid otp" });
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(500).json({ msg: 'Internal Server Error' });
+        }
+    }
+);
+
+router.post(
+    '/varifyotp',
+    async (req, res) => {
+        console.log("Verify OTP request:", req.baseUrl)
+        try {
+            let otp = req.body.otp;
+            const decoded = jwt.verify(req.cookies['jwt'], config.get('jwtSecret'));
+            if(decoded.otp == otp) {
+                return res.status(200).json({});
+            }
+            console.log(decoded);
+            console.log(decoded.otp == otp);
             return res.status(400).json({ 'msg': "Invalid otp" });
         } catch (error) {
             console.log('Error:', error);
@@ -74,13 +94,15 @@ router.post(
                 email
             };
 
+            console.log("Payload:", payload);
             jwt.sign(
                 payload,
                 config.get('jwtSecret'),
                 { expiresIn: 600 },
                 (error, token) => {
                     if (error) throw error;
-                    res.json({ token });
+                    res.cookie('jwt', token, {maxAge: 864000000, httpOnly: true});
+                    res.json({ });
                 }
             );
 

@@ -107,8 +107,8 @@ router.get(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            console.log(req)
-            let user = await User.findById(req.user.id).select('-password');
+            console.log(req.user)
+            let user = await UserModel.findById(req.user.id).select('-password');
 
             if (user) {
                 return res.status(200).json(user);
@@ -117,7 +117,7 @@ router.get(
             return res.status(404).json({ msg: 'User not found' });
 
         } catch (error) {
-            console.error(`Error while fetching User: ${req.user.id}`);
+            console.error(`Error while fetching User: ${error} ${req.user.id}`);
             return res.status(500).send(error.message);
         }
     }
