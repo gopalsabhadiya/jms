@@ -46,6 +46,7 @@ router.post(
                                 user: {
                                     id: user.id,
                                     business: user.business,
+                                    subscriptionEnd: business.subscriptionEnd,
                                     counter: counter._id
                                 }
                             };

@@ -51,8 +51,11 @@ const BusinessSchema = new mongoose.Schema({
     extras: {
         type: Map,
         of: Boolean
+    },
+    subscribed: {
+        type: Boolean,
+        default: false,
     }
-
 });
 
 module.exports = BusinessModel = mongoose.model('business', BusinessSchema);

@@ -1,6 +1,6 @@
 const validate = require('./validationFunctions');
 const { ValidationDictionary } = require('./validationConfig')
-const { validationResult, ValidationChain } = require('express-validator');
+const { validationResult } = require('express-validator');
 
 const validationMiddleware = async (request, response, next) => {
     const listToBeValidated = getValidationList(request);

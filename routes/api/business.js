@@ -117,9 +117,13 @@ router.put(
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            console.log(req.body.id)
+            console.log(req.body)
+            let businessToBeUpdated = req.body;
+            delete businessToBeUpdated.subscriptionEnd;
+            delete businessToBeUpdated.subscriptionStart;
+            console.log(businessToBeUpdated);
 
-            const business = await BusinessModel.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true });
+            const business = await BusinessModel.findOneAndUpdate({ _id: req.body._id }, businessToBeUpdated, { new: true });
 
             console.log(business);
             return res.json(business);

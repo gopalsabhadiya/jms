@@ -16,7 +16,9 @@ const middleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(jwtToken, config.get('jwtSecret'));
         req.user = decoded.user;
-        if (!req.user.business) {
+        let currentDate = new Date(2022, 10, 20);
+        let subscriptionDate = new Date(req.user.subscriptionEnd);
+        if (!req.user.business || subscriptionDate <= currentDate) {
             return res.status(401).json({ "msg": "Subscription ended" })
         }
         next();
