@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const middleware = (req, res, next) => {
-    console.log("Authenticating");
+    console.log("AuthMiddleware:"+req.baseUrl);
     //get token from header
     const token = req.header('x-auth-token');
     var jwtToken = req.cookies['jwt'];
@@ -16,9 +16,12 @@ const middleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(jwtToken, config.get('jwtSecret'));
         req.user = decoded.user;
-        let currentDate = new Date(2022, 10, 20);
+        let currentDate = new Date();
         let subscriptionDate = new Date(req.user.subscriptionEnd);
-        if (!req.user.business || subscriptionDate <= currentDate) {
+        console.log(!req.user.business);
+        console.log(subscriptionDate <= currentDate);
+        if (!config.get('skipUriForSubscription').includes(req.baseUrl) && (!req.user.business || subscriptionDate <= currentDate)) {
+            console.log("Into 401 unauthorised");
             return res.status(401).json({ "msg": "Subscription ended" })
         }
         next();

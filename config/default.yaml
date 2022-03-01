@@ -19,3 +19,6 @@ nodemailer:
 accountVerification:
   productionLink: https://zaveribook.com/verification/
   developmentLink: http://localhost:3000/verification/
+
+skipUriForSubscription: /api/user,/api/business
+

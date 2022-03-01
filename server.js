@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get("/", (req, res) => res.send("Test API"));
+app.get("/", (req, res) => res.send("Test API 123"));
 
 // Init Middleware
 app.use(express.json({ extended: false }));

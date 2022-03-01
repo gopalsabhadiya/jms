@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f57d57e0-7bc3-4559-8a8a-1bd4b645bae8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/default.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/default.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/validation/validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/validation/validate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/business/BusinessModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/business/BusinessModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/business.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/business.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +28,9 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/node_modules/nodemon/bin/nodemon.js" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2021.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RunManager">
     <configuration name="nodemon.js" type="NodeJSConfigurationType" application-parameters="server.js" nameIsGenerated="true" path-to-js-file="node_modules/nodemon/bin/nodemon.js" working-dir="$PROJECT_DIR$">
@@ -48,6 +48,13 @@
       <workItem from="1645507055932" duration="49000" />
       <workItem from="1645507116842" duration="615000" />
       <workItem from="1645609067151" duration="4883000" />
+      <workItem from="1645618914053" duration="1439000" />
+      <workItem from="1645676300217" duration="1212000" />
+      <workItem from="1645692573429" duration="1890000" />
+      <workItem from="1645778862278" duration="394000" />
+      <workItem from="1646025248818" duration="1321000" />
+      <workItem from="1646039091042" duration="3228000" />
+      <workItem from="1646109826519" duration="2512000" />
     </task>
     <servers />
   </component>

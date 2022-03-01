@@ -41,7 +41,6 @@ router.post(
                             }
                         };
 
-                        if (currentDate <= business.subscriptionEnd) {
                             payload = {
                                 user: {
                                     id: user.id,
@@ -50,13 +49,6 @@ router.post(
                                     counter: counter._id
                                 }
                             };
-                        } else {
-                            payload = {
-                                user: {
-                                    id: user.id
-                                }
-                            };
-                        }
                         let token = jwt.sign(
                             payload,
                             config.get('jwtSecret'),
