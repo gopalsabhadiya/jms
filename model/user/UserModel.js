@@ -14,10 +14,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     business: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses'
@@ -28,7 +24,11 @@ const UserSchema = new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
-    }
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 module.exports = UserModel = mongoose.model('user', UserSchema);

@@ -6,6 +6,8 @@ const middleware = (req, res, next) => {
     //get token from header
     const token = req.header('x-auth-token');
     var jwtToken = req.cookies['jwt'];
+    console.log("JWTTOKEN:"+jwtToken);
+    console.log("TOKEN:"+token);
 
     //check if no token 
     if (!jwtToken) {
@@ -18,8 +20,6 @@ const middleware = (req, res, next) => {
         req.user = decoded.user;
         let currentDate = new Date();
         let subscriptionDate = new Date(req.user.subscriptionEnd);
-        console.log(!req.user.business);
-        console.log(subscriptionDate <= currentDate);
         if (!config.get('skipUriForSubscription').includes(req.baseUrl) && (!req.user.business || subscriptionDate <= currentDate)) {
             console.log("Into 401 unauthorised");
             return res.status(401).json({ "msg": "Subscription ended" })

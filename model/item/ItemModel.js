@@ -7,6 +7,9 @@ const ItemSchema = new mongoose.Schema({
     itemId: {
         type: String
     },
+    userDefinedId: {
+        type: String
+    },
     category: {
         type: String,
         required: true
@@ -58,8 +61,11 @@ const ItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
         required: true
-    }
-
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 ItemSchema.plugin(ItemQueriesPlugin);

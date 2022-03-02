@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/auth');
-const ItemModel = require('../../model/item/ItemModel');
-const { getNextItemCount } = require('../../service/counter');
 const { createItem, updateItem, getItemById, getItemByBusiness, deleteItem, searchItem } = require('../../service/item');
 
 /**
