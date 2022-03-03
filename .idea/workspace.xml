@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f57d57e0-7bc3-4559-8a8a-1bd4b645bae8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/routes/api/stats.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/stats.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/item/ItemModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/item/ItemModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/user/UserModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/user/UserModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/item.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/item.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/stats.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/stats.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,17 +37,6 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2021.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="nodemon.js" type="NodeJSConfigurationType" application-parameters="server.js" nameIsGenerated="true" path-to-js-file="node_modules/nodemon/bin/nodemon.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -79,7 +62,9 @@
       <workItem from="1646125990843" duration="1885000" />
       <workItem from="1646139577921" duration="1512000" />
       <workItem from="1646196619833" duration="4771000" />
-      <workItem from="1646210671540" duration="9681000" />
+      <workItem from="1646210671540" duration="10314000" />
+      <workItem from="1646283381808" duration="1743000" />
+      <workItem from="1646300087967" duration="4218000" />
     </task>
     <servers />
   </component>

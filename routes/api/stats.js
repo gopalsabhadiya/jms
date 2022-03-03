@@ -17,9 +17,8 @@ router.get('/business',
     async (req, res) => {
         console.log("Serving request:", req.baseUrl);
         try {
-            let response = {};
             let business = await BusinessModel.findById(req.user.business).select({ itemCollection: 1, _id: 0});
-            response.businessStats = calculateBusinessState(business);
+            let response = calculateBusinessState(business);
             return res.json(response);
 
         } catch (error) {
